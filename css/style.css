@@ -36,9 +36,9 @@ Primary use:	Multi Step Form.
 [0. colores]
 */
 :root{
-    --theme-brand-color: #007888;
+    --theme-brand-color: #000111;
     --theme-primary-color: #65b32e;
-    --theme-secondary-color: #54606c;
+    --theme-secondary-color: rgb(165, 113, 20);
     --theme-accent-color: #e97117;
     --theme-error-color: #c8102e;
     --theme-primary-dark-color: #328000;
@@ -104,7 +104,9 @@ body.background-image {
     -webkit-font-smoothing: antialiased;
 }
 
-
+.row{
+    margin: 0px;
+}
 h1 { 
     font-size: 34px;
     font-weight: 300;
@@ -124,7 +126,7 @@ p {
 }
 
 .steps-footer-banner{
-    background: var(--footer-bg-color);
+    background: var(--theme-secondary-color);
     padding: 1rem;
 }
 
@@ -210,6 +212,7 @@ p {
 
 .steps-footer-derecho{
     color:var(--theme-input-bg);
+    display: inline-block;
 }
 .steps-footer-aviso{
     color:var(--theme-input-bg);
@@ -688,6 +691,11 @@ margin-top: 2rem;
 .step-btn-next{
     background-color: var(--theme-accent-color);
     color:var(--theme-input-bg);
+    outline: none;
+}
+.step-btn-back{
+    background-color: var(--theme-input-bg);
+    color:var(--theme-brand-color);
     outline: none;
 }
 /*------------------------------------------------------------------

@@ -1,6 +1,12 @@
 var PAGECONTROLS;
 var OBJCaptura;
-
+var OBJImageStpes = [
+    'images/banks-store_545x545.png'
+    , 'images/banks.png'
+    , 'images/analysis.png'
+    , 'images/secure.png'
+    , 'images/bureau.png'
+];
 
 /**
  * Tuna Signup Form Wizard
@@ -46,8 +52,21 @@ var lunaWizard = {
      */
     changeStep: function (currentStep, nextStep) {
         var self = this;
+        var permitirAvanzar = true;
 
-        
+        console.log(`currentStep: ${currentStep}`);
+        switch(currentStep){
+            case '1':
+                if(OBJCaptura.QueBuscas == null){
+                    fg_mensaje_aviso_restriccion("¿Que estas buscando?", "No ha seleccionado una opción", "No puede continuar.", "Seleccione una opción de la lista para continuar.");
+                    permitirAvanzar = false;
+                }
+                break;
+        }
+
+        if(!permitirAvanzar){
+            return;
+        }
         
         $('html,body').animate({ scrollTop: 0 }, 'slow');
 
@@ -283,6 +302,36 @@ var lunaWizard = {
 
     },
 }
+
+function getTemplateSeccionBodyStep(_questionTitle, _descripcion, _body, _itemImage) {
+    var tag = `
+    <div class="row">
+         <div class="col-xs-12 col-sm-6 col-md-5 col-lg-6 text-center">
+             ${_body}
+         </div>
+         <div class="col-xs-12 col-sm-6 col-md-7 col-lg-6">
+           <img class='step-image' src='${OBJImageStpes[_itemImage]}' alt="banks store" />
+         </div>
+    </div>
+    `;
+
+    return tag;
+}
+
+function getTemplateBtnTitleSubTitle(_idBtn, _title, _subtitle) {
+
+    var tag = `
+               <button id="${_idBtn}" type="button" class="btn btn-block">
+                  <span>${_title}</span>
+                  <small>${_subtitle}</small>
+               </button>    
+             `;
+
+
+    return tag;
+}
+
+
 
 
 /**

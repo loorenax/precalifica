@@ -3,7 +3,7 @@
 
 <head>
     <title>Precalifica para Crédito Hipotecario - Credimejora</title>
-    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="shortcut icon" href="/images/favicon.png">
 
 
     <meta charset="utf-8">
@@ -40,7 +40,7 @@
         <div class='container'>
             <div class="row">
                 <div class='luna-signup-left'>
-                    <img class='luna-signup-logo img-responsive' src='images/header-company-logo-v2.png' alt="logo" />
+                    <img class='luna-signup-logo img-responsive' src='images/logo.png' alt="logo" />
                     <div class="luna-navigation">
                         <a class="toPrev prevStep"><i class="icon icon-arrow-up2"></i></a>
                         <ul class="dots"></ul>
@@ -63,7 +63,7 @@
 
                         <div class="luna-steps">
 
-                            <div class="step step-active" data-step-id='1'>
+                            <div id="stepBody_1" class="step step-active" data-step-id='1'>
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6 col-md-5 col-lg-6 text-center">
                                         <div class="step-title">¿Que estas buscando?</div>
@@ -72,7 +72,7 @@
                                         <div class="step-body">
                                             <button id="btnSelAdquirir" type="button" class="btn btn-block">
                                                 <span>Adquirir un inmueble</span>
-                                                <small>Adquirir un inmueble</small>
+                                                <small>Crédito para comprar una vivienda</small>
                                             </button>
                                             <button id="btnSelMejorar" type="button" class="btn btn-block">
                                                 <span>Mejorar mi crédito actual</span>
@@ -83,17 +83,11 @@
                                                 <small>Utilizando tu propiedad como garantía</small>
                                             </button>
                                         </div>
-
                                     </div>
                                     <div class="col-xs-12 col-sm-6 col-md-7 col-lg-6">
-                                        <img class='step-image' src='images/banks-store_545x545.png'
-                                            alt="banks store" />
+                                        <img class='step-image' src='images/banks-store_545x545.png' alt="banks store" />
                                     </div>
-
-
                                 </div>
-
-
                             </div>
 
                             <div class="step" data-step-id='2'>
@@ -280,19 +274,34 @@
 
                             </div>
 
-
-
                         </div>
 
+                        <div class="luna-steps-footer">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6 col-md-5 col-lg-6 text-right">
+                                    <div id="lunaStepsFooterError" class="alert danger" role="alert">
+                                        Por favor debe seleccionar una opción para avanzar.
+                                      </div>
+                                </div>
+                            </div>
 
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6 col-md-5 col-lg-6 text-right">
+                                    <button id="btnBack" type="button" href="javascript:void(0)" class="btn step-btn-back prevStep" style="margin-right: 3rem;">
+                                        <i class="icon icon-arrow-left2"></i> Regresar                                        
+                                    </button>
+                                    <button id="btnNext" type="button" href="javascript:void(0)" class="btn step-btn-next nextStep">Siguiente <i class="icon icon-arrow-right2"></i></button>
+                                </div>
+                            </div>                        
+                        </div>
 
                     </form>
                     <div class='button-container' style="display:none">
-                        <div>
+                        <!-- <div>
                             <a href="javascript:void(0)" class="btn btn-blue btn-rounded nextStep"
                                 tabindex="0">Siguiente →</a>
                             <span>or press "Enter"</span>
-                        </div>
+                        </div> -->
                     </div>
 
 
@@ -308,14 +317,13 @@
         <div class="steps-footer-banner">
             <div class="row">
                 <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <img class='luna-signup-logo img-responsive' src='images/footer-company-logo-big.png' alt="logo" />
-                    <div class="steps-footer-derecho">2020 © Credimejora, todos los derechos reservados.</div>
+                    <img class='luna-signup-logo img-responsive' src='images/logo maay capital final oscuro-01.png' style="height: 90px; width: auto; display: inline-block; margin:0px;" alt="logo" />
+                    <div class="steps-footer-derecho">2021 © MAAY Capital, todos los derechos reservados.</div>
                 </div>
                 <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">
                     <div class="steps-footer-aviso">Aviso de privacidad</div>
                     <div class="steps-footer-terminos">Términos y condiciones de uso</div>
-                    <div class="steps-footer-creado">Creado con la tecnología de <img class='img-responsive'
-                            src='images/footer-company-logo-small.png' alt="logo" /></div>
+                    <div class="steps-footer-creado">Creado con la tecnología de <img class='img-responsive' src='images/footer-company-logo-small.png'  alt="logo" /></div>
                 </div>
 
             </div>

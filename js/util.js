@@ -2,6 +2,9 @@ var _LOCALE_ = 'es';
 var _CERRAR_ = 'Cerrar';
 var _CLASS_BTN_DEFAULT = 'btn-default';
 var Resultado_Controles_X_Agrupador = [];
+var _PROBLEMA_ = 'Problema';
+var _RESTRICCION_ = 'RESTRICCION';
+var _SOLUCION_ = 'Solución';
 
 
 function fg_mensaje_problema_tecnico(e) {
@@ -135,7 +138,9 @@ function fg_mensaje_aviso_restriccion(_Modulo_Configuracion, _Problema, _Restric
             className: _CLASS_BTN_DEFAULT,
             callback: function () { }
         }]
-    }).css({ 'display': 'flex' }).find('.modal-header').removeClass('modal-header').addClass('modal-header-aviso-restriccion');//esta linea es para que el encabezado sea negro
+    }).find('.modal-header').removeClass('modal-header').addClass('modal-header-aviso-restriccion');//esta linea es para que el encabezado sea negro
+
+        //}).css({ 'display': 'flex' }).find('.modal-header').removeClass('modal-header').addClass('modal-header-aviso-restriccion');//esta linea es para que el encabezado sea negro
 }
 
 
