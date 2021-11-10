@@ -35,15 +35,16 @@ Primary use:	Multi Step Form.
 /*------------------------------------------------------------------
 [0. colores]
 */
-:root{
-    --theme-brand-color: #000111;
+:root {
+    --theme-brand-color: #000000;
+    /*#000111;*/
     --theme-primary-color: #65b32e;
-    --theme-secondary-color: rgb(165, 113, 20);
+    --theme-secondary-color: rgb(219 153 37);  /*rgb(165, 113, 20);*/
     --theme-accent-color: #e97117;
     --theme-error-color: #c8102e;
     --theme-primary-dark-color: #328000;
     --theme-button-background: #d2d2d2;
-    --theme-font-color: black;
+    --theme-font-color: #292323;
     --theme-input-bg: #f5f5f5;
     --theme-input-bg--hover: #e9e9e9;
     --theme-input-border-color: #747474;
@@ -92,51 +93,61 @@ body {
     font-size: 13px;
     font-family: 'Open Sans', arial, helvetica, sans-serif;
     color: #565555;
-    background:#FFF;
+    background: #FFF;
 }
 
-body.background-image { 
+body.background-image {
     /* background: url(../images/bg.jpg) #fff;  */
-    background-size:cover; 
+    background-size: cover;
 }
 
-* { 
+* {
     -webkit-font-smoothing: antialiased;
 }
 
-.row{
+.row {
     margin: 0px;
 }
-h1 { 
+
+h1 {
     font-size: 34px;
     font-weight: 300;
     color: #34ba6d;
 }
 
-p { 
-    font-size:16px;
-    line-height:30px;
+p {
+    font-size: 16px;
+    line-height: 30px;
 }
 
 
-.steps-footer{
+.steps-footer {
     position: fixed;
     bottom: 0;
     width: 100%;
 }
 
-.steps-footer-banner{
+.steps-footer-banner {
     background: var(--theme-secondary-color);
     padding: 1rem;
 }
 
+#lblEstadoMunicipio {
+    font-size: 1.25rem;
+    font-weight: bold;
+    width: 100%;
+}
+
+.span-error {
+    color: red;
+}
 
 /*------------------------------------------------------------------
 [2.Input & Labels ]
 */
 
-.form-group { 
-    margin-bottom: 60px;
+.form-group {
+    margin-bottom: 25px;
     position: relative;
 }
 
@@ -145,11 +156,12 @@ p {
     display: block;
     position: absolute;
     font-size: 20px;
-    color:#999;
+    color: #999;
     font-weight: 500;
     line-height: 1.2;
     transition: all .2s
 }
+
 .formLabel.active {
     -webkit-transform: translateY(-140%);
     transform: translateY(-140%);
@@ -167,6 +179,7 @@ p {
     border-bottom: 2px solid #EEE;
     display: block;
 }
+
 .formInput:focus {
     outline: none;
     border-bottom: 2px solid #CCC;
@@ -176,13 +189,32 @@ p {
     -o-transition: border-bottom .5s;
     transition: border-bottom .5s;
 }
+
 .formInput.input-error {
     border-bottom-color: rgba(0, 0, 0, 0.5);
 }
-.formInput.error { border-bottom-color:#ff6d6d; }  
-.errorIcon { position: absolute; top:8px; right:0; display: none; }
-.errorIcon i { color:#ff6d6d; font-size:18px; }
-.error { color:#ff6d6d; }
+
+.formInput.error {
+    border-bottom-color: #ff6d6d;
+}
+
+.errorIcon {
+    position: absolute;
+    top: 8px;
+    right: 0;
+    display: none;
+}
+
+.errorIcon i {
+    color: #ff6d6d;
+    font-size: 18px;
+}
+
+.error {
+    color: #ff6d6d;
+}
+
+
 
 .help-error {
     font-size: 14px;
@@ -193,6 +225,7 @@ p {
     display: none;
     text-align: right;
 }
+
 .help-error i {
     font-weight: bold;
     font-size: 16px;
@@ -200,6 +233,7 @@ p {
     float: right;
     margin-left: 20px;
 }
+
 .help-info {
     text-align: right;
     font-size: 13px;
@@ -208,24 +242,83 @@ p {
     padding: 10px 0;
 }
 
-.help-block { color:#ecb200; font-size:14px; }
+.help-block {
+    color: #ecb200;
+    font-size: 14px;
+}
 
-.steps-footer-derecho{
-    color:var(--theme-input-bg);
+.steps-footer-derecho {
+    color: var(--theme-input-bg);
     display: inline-block;
 }
-.steps-footer-aviso{
-    color:var(--theme-input-bg);
+
+.steps-footer-aviso {
+    color: var(--theme-input-bg);
     text-transform: uppercase;
 }
-.steps-footer-terminos{
-    color:var(--theme-input-bg);
+
+.steps-footer-terminos {
+    color: var(--theme-input-bg);
     text-transform: uppercase;
 }
-.steps-footer-creado{
-    color:var(--theme-input-bg);
+
+.steps-footer-creado {
+    color: var(--theme-input-bg);
     text-transform: uppercase;
 }
+
+.procesandoValidacion_1 {
+
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--theme-brand-color);
+    display: block;
+}
+
+.procesandoValidacion_2 {
+    font-size: 2rem;
+    color: var(--theme-secondary-color);
+    display: block;
+}
+
+.procesandoValidacion_3 {
+
+    font-size: 2rem;
+    color: var(--theme-font-color);
+}
+
+.autorizado_Header {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--theme-brand-color);
+    display: block;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.autorizado_Monto {
+    font-size: 5rem;
+    font-weight: bold;
+    color: var(--theme-primary-dark-color);
+    display: block;
+}
+.autorizado_subtexto {
+    font-size: 1.5rem;
+    color: var(--theme-anchor-visited-color);
+    display: block;
+}
+
+.waitCodeSpinner {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--theme-brand-color);
+    display: block;
+
+}
+.waitCodeImage {
+    width: 100%;
+    height: auto;
+}
+
 
 /*------------------------------------------------------------------
 [3. Buttons ]
@@ -234,17 +327,20 @@ p {
     font-weight: 700;
     font-size: 15px;
 }
+
 .btn-rounded {
     border-radius: 30px;
 }
+
 .btn-blue {
     background: #48A5EA;
     color: #FFF;
     padding: 10px 30px !important;
 }
+
 .btn-blue:hover {
     background: #317db5;
-    color:#FFF;
+    color: #FFF;
 }
 
 .btn-green {
@@ -252,9 +348,10 @@ p {
     color: #FFF;
     padding: 10px 30px !important;
 }
+
 .btn-green:hover {
     background: #12b957;
-    color:#FFF;
+    color: #FFF;
 }
 
 .btn-white-transparent {
@@ -263,11 +360,61 @@ p {
     color: #FFF;
     padding: 10px 30px !important;
 }
+
 .btn-white-transparent:hover {
     background: #FFF;
     color: #777;
 }
 
+.btn-reenvio {
+    background-color: var(--theme-secondary-color) !important;
+    color: var(--theme-input-bg);
+}
+
+.date-old {
+    display: flex;
+}
+
+.date-old span {
+    margin-top:auto;
+}
+.date-old input {
+    width: 25% !important;
+    text-align: center;
+}
+.date-old select {
+    width: 45% !important;
+}
+.input_date-old .form-group{
+    margin: 0px;
+}
+
+.bg-segundo-plano {
+    background-color: var(--theme-button-background);
+    color: var(--theme-brand-color);
+}
+
+.bg-primer-plano {
+    background-color: var(--theme-primary-dark-color);
+    color: var(--theme-input-bg);
+}
+
+.btnchk {
+    background-color: transparent !important;
+    color: var(--color-principal);
+    font-size: 2.5rem;
+    line-height: 1;
+    padding: 0;
+    margin-left: 5px;
+    box-shadow: none !important;
+}
+
+.btnchk:hover, .btnchk:active, .btnchk:focus {
+    background-color: transparent  !important;
+    color: var(--color-principal)  !important;
+    border: 0px !important;
+    outline: none !important;
+}
 
 /*------------------------------------------------------------------
 [4. Loader / .luna-loader-container]
@@ -282,14 +429,17 @@ p {
     background: #FFF;
     z-index: 1000;
 }
+
 .luna-loader {
     position: absolute;
     top: 50%;
     margin-top: -25px;
     left: 50%;
     margin-left: -25px;
-    border: 4px solid #f3f3f3; /* Light grey */
-    border-top: 4px solid #3498db; /* Blue */
+    border: 4px solid #f3f3f3;
+    /* Light grey */
+    border-top: 4px solid #3498db;
+    /* Blue */
     border-radius: 50%;
     width: 50px;
     height: 50px;
@@ -313,9 +463,9 @@ p {
 */
 .luna-signup-left {
     padding: 60px 30px 30px;
-    background:var(--theme-brand-color);
+    background: var(--theme-brand-color);
     position: fixed;
-    width:200px;
+    width: 200px;
 }
 
 .luna-signup-left-overlay {
@@ -337,48 +487,49 @@ p {
     color: #999;
 }
 
-.luna-navigation { 
-    height: calc(100% - 70px); 
-    position: relative; 
+.luna-navigation {
+    height: calc(100% - 70px);
+    position: relative;
 }
 
-.dots { 
+.dots {
     list-style: none;
     margin: 0;
-    padding:0; 
-    position: 
-        absolute; 
-    top:50%; 
-    left:50%; 
-    margin-left: -10px; 
-    margin-top:-20px;
+    padding: 0;
+    position:
+        absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -10px;
+    margin-top: -20px;
 }
 
-.dots li { 
-    margin-bottom: 6px; 
-    text-align: center; 
-    width:20px; 
-}
-.dots span { 
-    position: relative; 
-    width:8px; 
-    height:8px; 
-    display:block; 
-    margin:auto; 
-    border-radius: 50%; 
-    background:#FFF; 
-    opacity: 0.8; 
+.dots li {
+    margin-bottom: 6px;
+    text-align: center;
+    width: 20px;
 }
 
-.dots span:hover { 
-    cursor: default; 
+.dots span {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    display: block;
+    margin: auto;
+    border-radius: 50%;
+    background: #FFF;
+    opacity: 0.8;
 }
 
-.dots span.selected { 
-    width:10px; 
-    height:10px; 
-    opacity: 1; 
-    margin-top:10px; 
+.dots span:hover {
+    cursor: default;
+}
+
+.dots span.selected {
+    width: 10px;
+    height: 10px;
+    opacity: 1;
+    margin-top: 10px;
 }
 
 .dots span.selected:after {
@@ -392,6 +543,7 @@ p {
     border-width: 0 5px 10px 5px;
     border-color: transparent transparent #ffffff transparent;
 }
+
 .toPrev,
 .toNext {
     width: 40px;
@@ -408,13 +560,16 @@ p {
     margin-left: -20px;
     z-index: 1000;
 }
+
 .toNext:hover,
 .toPrev:hover {
     text-decoration: none;
 }
+
 .toNext {
     bottom: 0;
 }
+
 .label-block {
     display: block;
     margin: 16px 0 !important;
@@ -425,8 +580,8 @@ p {
 */
 .luna-signup-logo {
     margin-bottom: 20px;
-    max-width:200px;
-    width:100%;
+    max-width: 200px;
+    width: 100%;
 }
 
 /*------------------------------------------------------------------
@@ -434,7 +589,7 @@ p {
 */
 .luna-signup-right {
     position: relative;
-    margin-left:200px;
+    margin-left: 200px;
     /*overflow-y: auto;*/
     padding: 60px 30px 0 0
 }
@@ -447,16 +602,19 @@ p {
     font-size: 13px;
     text-align: right;
 }
-.steps-header{
-    margin-bottom: 5rem;    
+
+.steps-header {
+    margin-bottom: 5rem;
 }
-.steps-header .steps-header_title{
+
+.steps-header .steps-header_title {
     font-size: 3.5rem;
     font-weight: bold;
     color: var(--theme-brand-color);
     text-align: center;
 }
-.steps-header .steps-header_subtitle{
+
+.steps-header .steps-header_subtitle {
     font-size: 1.50rem;
     text-align: center;
 }
@@ -464,8 +622,8 @@ p {
 /*------------------------------------------------------------------
 [5.2.2 Steps / .luna-steps]
 */
-.luna-steps { 
-    height:500px;
+.luna-steps {
+    height: 500px;
     position: relative;
 }
 
@@ -479,13 +637,17 @@ p {
     -webkit-transform: translateY(30px);
     transform: translateY(30px);
 }
+
 .step.step-active {
     transform: none;
     visibility: visible;
     opacity: 1;
 }
 
-.step .form-group {  display:none; }
+.step .form-group {
+    display: none;
+}
+
 .step.step-active .form-group {
     display: block;
 }
@@ -495,24 +657,27 @@ p {
     transform: translateY(-50px) !important;
 }
 
-.step-label { 
-    font-size:16px; 
-    margin-bottom:5px; 
-    font-weight:500; 
-    color:#999;
-    margin-top:-29px;
+.step-label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #999;
+    margin-top: -29px;
 }
 
-.luna-steps .checkbox-inline, .luna-steps .radio-inline{
-    font-size:20px; 
-    font-weight:500;
-    padding-left:25px;
+.luna-steps .checkbox-inline,
+.luna-steps .radio-inline {
+    font-size: 20px;
+    font-weight: 500;
+    padding-left: 25px;
     line-height: 20px;
     margin-right: 20px;
-    margin:10px 20px 10px 0;
+    margin: 10px 20px 10px 0;
 }
-.checkbox-inline+.checkbox-inline, .radio-inline+.radio-inline { 
-    margin-left:0;
+
+.checkbox-inline+.checkbox-inline,
+.radio-inline+.radio-inline {
+    margin-left: 0;
 }
 
 
@@ -523,6 +688,7 @@ p {
     margin-bottom: 1rem;
     text-align: center;
 }
+
 .step-sub-title {
     font-weight: var(--font-thin);
     font-size: 1.75rem;
@@ -536,11 +702,14 @@ p {
 */
 
 .step-confirm {
-    height:0;
-    overflow:hidden;
+    height: 0;
+    overflow: hidden;
 }
 
-.step-confirm.step-active { height: initial; overflow:initial;}
+.step-confirm.step-active {
+    height: initial;
+    overflow: initial;
+}
 
 .step-confirm.step-active .fadeTop {
     opacity: 0;
@@ -554,63 +723,89 @@ p {
 .step-confirm.step-active .fadeTop:nth-of-type(1) {
     animation-delay: 0.5s;
 }
+
 .step-confirm.step-active .fadeTop:nth-of-type(2) {
     animation-delay: 0.7s;
 }
+
 .step-confirm.step-active .fadeTop:nth-of-type(3) {
     animation-delay: 0.9s;
 }
+
 .step-confirm.step-active .fadeTop:nth-of-type(4) {
     animation-delay: 1.05s;
 }
+
 .step-confirm.step-active .fadeTop:nth-of-type(5) {
     animation-delay: 1.20s;
 }
+
 .step-confirm.step-active .fadeTop:nth-of-type(6) {
     animation-delay: 1.35s;
 }
+
 .step-confirm.step-active .fadeTop:nth-of-type(7) {
     animation-delay: 1.5s;
 }
+
 .step-confirm.step-active .fadeTop:nth-of-type(8) {
     animation-delay: 1.65s;
 }
+
 .step-confirm.step-active .fadeTop:nth-of-type(9) {
     animation-delay: 1.75s;
 }
+
 .step-confirm.step-active .fadeTop:nth-of-type(10) {
     animation-delay: 1.85s;
 }
+
 .step-confirm.step-active .fadeTop:nth-of-type(11) {
     animation-delay: 1.95s;
 }
+
 .step-confirm.step-active .fadeTop:nth-of-type(12) {
     animation-delay: 2s;
 }
+
 .step-confirm.step-active .fadeTop:nth-of-type(13) {
     animation-delay: 2.05s;
 }
+
 .step-confirm.step-active .fadeTop:nth-of-type(14) {
     animation-delay: 2.08s;
 }
+
 .step-confirm.step-active .fadeTop:nth-of-type(15) {
     animation-delay: 2.1s;
 }
 
-.step-confirm-buttons { padding:15px; text-align: center }
+.step-confirm-buttons {
+    padding: 15px;
+    text-align: center
+}
 
 .agreement {
     font-size: 14px !important;
-}   
+}
+
 .agreement a {
     color: #48a5ea;
     text-decoration: underline;
     font-weight: 600;
 }
 
-.confirm-label,.confirm-text { font-size:16px; margin-bottom:10px;}
-.confirm-label {color:#999 }
-.confirm-text {}
+.confirm-label,
+.confirm-text {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.confirm-label {
+    color: #999
+}
+
+
 
 /*------------------------------------------------------------------
 [5.2.3 Buttons / .button-container]
@@ -618,9 +813,10 @@ p {
 .button-container {
     text-align: right;
     position: relative;
-    z-index:10000;
+    z-index: 10000;
     width: 100%;
 }
+
 .button-container>div {
     display: inline-block;
     text-align: center;
@@ -628,14 +824,17 @@ p {
     margin: 0 0 10px 10px;
 
 }
+
 .button-container>div a {
     margin-bottom: 10px;
     display: block;
 }
+
 .prevStep {
     outline: none;
     display: none;
 }
+
 .button-container a,
 .button-container a:hover,
 .button-container a:focus,
@@ -644,19 +843,19 @@ p {
     outline: none;
 }
 
-.step-body{
-margin-top: 2rem;
+.step-body {
+    margin-top: 2rem;
 }
 
-.step-body button{
+.step-body button {
     display: block;
-    color: var(--theme-font-color);
-    background-color: var(--theme-button-background);
+    /* color: var(--theme-font-color); */
+    /* background-color: var(--theme-button-background); */
     padding-top: 15px;
     padding-bottom: 15px;
     margin-bottom: 1.5rem;
     box-shadow: 1px 2px 5px #7f7f7f;
-    border:0px;
+    border: 0px;
     outline: none;
 }
 
@@ -666,38 +865,59 @@ margin-top: 2rem;
     color: var(--theme-input-bg--hover);
 }
 
-.step-body button:active, .step-body button:focus {
+.step-body button:active,
+.step-body button:focus {
     background-color: var(--theme-primary-dark-color);
     outline: none;
     color: var(--theme-input-bg--hover);
 }
 
 
-.step-body button span{
+.step-body button span {
     font-size: 1.75rem;
     font-weight: bold;
     display: block;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;    
 }
-.step-body button small{
+
+.step-body button small {
     font-size: 1.25rem;
     display: block;
     font-weight: 500;
     font-size: 80%;
 }
-.step-image{
+
+.step-image {
     width: 100%;
 }
 
-.step-btn-next{
-    background-color: var(--theme-accent-color);
-    color:var(--theme-input-bg);
+.step-btn-next {
+    background-color: var(--theme-brand-color);
+    color: var(--theme-input-bg);
     outline: none;
 }
-.step-btn-back{
+
+.step-btn-back {
     background-color: var(--theme-input-bg);
-    color:var(--theme-brand-color);
+    color: var(--theme-brand-color);
     outline: none;
 }
+
+.nextStep:hover,
+.nextStep:focus {
+    background-color: var(--theme-secondary-color);
+    color: var(--theme-input-bg--hover);
+    outline: none;
+}
+
+.prevStep:hover,
+.prevStep:focus {
+    color: var(--theme-secondary-color);
+    outline: none;
+}
+
 /*------------------------------------------------------------------
 [6. Animations]
 */
@@ -705,15 +925,16 @@ margin-top: 2rem;
 .luna_loading {
     width: 60px;
     height: 60px;
-    margin:auto;
-    margin-bottom:20px;
-    display:block;
+    margin: auto;
+    margin-bottom: 20px;
+    display: block;
 }
 
 @keyframes spin {
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }
@@ -725,18 +946,21 @@ margin-top: 2rem;
         -webkit-transform: translateY(50px);
         transform: translateY(50px)
     }
+
     to {
         opacity: 1;
         -webkit-transform: none;
         transform: none
     }
 }
+
 @keyframes animateInput {
     0% {
         opacity: 0;
         -webkit-transform: translateY(50px);
         transform: translateY(50px)
     }
+
     to {
         opacity: 1;
         -webkit-transform: none;
@@ -744,69 +968,71 @@ margin-top: 2rem;
     }
 }
 
-.survey-description { margin:30px 0; }
+.survey-description {
+    margin: 30px 0;
+}
 
 /*------------------------------------------------------------------
 [9. BootStrap Select]
 */
 .bootstrap-select.form-control {
-    background:none;
+    background: none;
     border-radius: 0;
-    box-shadow:none;
-    height:auto;
+    box-shadow: none;
+    height: auto;
 }
 
-.bootstrap-select button { 
-    border:none;
-    background:none;
-    color:#333 !important;
-    font-weight:normal;
-    border-bottom:2px solid #EEE;
+.bootstrap-select button {
+    border: none;
+    background: none;
+    color: #333 !important;
+    font-weight: normal;
+    border-bottom: 2px solid #EEE;
     border-radius: 0;
-    box-shadow:none;
+    box-shadow: none;
     outline: none !important;
-    font-size:20px;
+    font-size: 20px;
 }
 
-.bootstrap-select .btn-default:hover, .bootstrap-select.open>.dropdown-toggle.btn-default:hover {
-    background:none;
-    border-color:#CCC;
-    box-shadow:none !important;
+.bootstrap-select .btn-default:hover,
+.bootstrap-select.open>.dropdown-toggle.btn-default:hover {
+    background: none;
+    border-color: #CCC;
+    box-shadow: none !important;
 }
 
-.btn-group.open .dropdown-toggle
-{
+.btn-group.open .dropdown-toggle {
     box-shadow: none;
 }
 
-.bootstrap-select .btn-default.active, 
-.bootstrap-select .btn-default:active, 
+.bootstrap-select .btn-default.active,
+.bootstrap-select .btn-default:active,
 .bootstrap-select.open>.dropdown-toggle.btn-default,
-.bootstrap-select .btn-default.focus, 
-.bootstrap-select  .btn-default:focus{
-    background:none;
-    outline:none !important;
-    border-color:#CCC;
-    color:#333;
+.bootstrap-select .btn-default.focus,
+.bootstrap-select .btn-default:focus {
+    background: none;
+    outline: none !important;
+    border-color: #CCC;
+    color: #333;
 }
 
 .bootstrap-select .dropdown-menu {
-    box-shadow:rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
-    background-color:#FFF;
-    border-radius:0;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    background-color: #FFF;
+    border-radius: 0;
 }
 
-.bootstrap-select .dropdown-menu a:focus { 
-    outline: none; 
+.bootstrap-select .dropdown-menu a:focus {
+    outline: none;
 }
 
 .bootstrap-select.btn-group .dropdown-menu li a {
-    padding:6px 20px;
+    padding: 6px 20px;
 }
 
 .bootstrap-select.btn-group .dropdown-menu li.selected a {
-    color:#FFF;
-    background:#48A5EA;
+    color: #FFF;
+    background: #48A5EA;
 }
 
 .tooltip-inner {
@@ -815,6 +1041,7 @@ margin-top: 2rem;
     border: 2px solid #999;
     font-size: 14px;
 }
+
 .tooltip.top .tooltip-arrow {
     border-top-color: #999;
 }
@@ -826,46 +1053,54 @@ margin-top: 2rem;
 /* Luna Default Theme  */
 
 .luna-default .bootstrap-select button {
-    border:2px solid #c9c9c9;
-    border-radius:3px;
-    font-size:18px;
+    border: 2px solid #c9c9c9;
+    border-radius: 3px;
+    font-size: 18px;
 }
+
 .luna-default .errorIcon {
-    top:37px;
-    right:10px;
+    top: 37px;
+    right: 10px;
 }
 
 .luna-default .input-group-addon {
-    border:2px solid #c9c9c9;    
+    border: 2px solid #c9c9c9;
 }
 
-.luna-default  .input-group-addon:first-child {
+.luna-default .input-group-addon:first-child {
     border-right: 0;
 }
 
 .form-control {
-    border:2px solid #c9c9c9;
-    box-shadow:none;
-    border-radius:3px;
+    border: 0px;
+    border-bottom: 1px solid var(--theme-input-border-color);
+    box-shadow: none;
+    border-radius: 3px;
     height: 40px;
-    font-size:18px;
+    font-size: 18px;
 }
 
 .form-control.error {
-    border-color:#ff6d6d;
+    border-color: #ff6d6d;
 }
 
 .form-control:focus {
-    border-color:#52bad5;
-    box-shadow:none;
+    outline: none;
+    border-bottom: 1px solid var(--theme-secondary-color);
+    box-shadow: none;
 }
 
-.luna-default .form-group { 
-    margin-bottom:30px; 
+#lunaStepsFooterError {
+    color: var(--theme-error-color);
 }
 
-.luna-default .step-label { 
-    margin-top:0; 
+
+.luna-default .form-group {
+    margin-bottom: 30px;
+}
+
+.luna-default .step-label {
+    margin-top: 0;
 }
 
 
@@ -881,6 +1116,7 @@ margin-top: 2rem;
     background-color: midnightblue !important;
     padding: 5px;
 }
+
 .modal-header-danger {
     background-color: crimson !important;
     padding: 5px;
@@ -890,7 +1126,7 @@ margin-top: 2rem;
 
 .modal-header-salir {
     background-color: #FFFFFF !important;
-    color: rgba(0,0,0,.125);
+    color: rgba(0, 0, 0, .125);
     padding: 5px;
 }
 
@@ -912,55 +1148,64 @@ margin-top: 2rem;
     }
 
     .luna-signup-right {
-        padding-right:0;
+        padding-right: 0;
     }
 
 
     .luna-steps .step {
-        padding-left:15px;
+        padding-left: 15px;
     }
 
 }
 
 @media only screen and (max-width: 767px) {
-    .container{
-        width:100%;
+    .container {
+        width: 100%;
     }
 
     .luna-signup-logo {
         margin: 20px auto;
     }
+
     .step-hide {
         height: 0;
         overflow: hidden;
     }
+
     .luna-signup-container:after {
         display: none;
     }
+
     .luna-signup-left {
         padding: 15px;
         width: 100%;
         position: initial;
     }
+
     .luna-navigation {
         position: relative;
         height: auto;
         padding: 20px;
     }
+
     .luna-navigation:after {
         clear: both;
         content: '';
         display: block;
     }
+
     .dots {
         position: initial;
     }
+
     .dots {
         text-align: center;
     }
+
     .dots li {
         display: inline-block;
     }
+
     .toNext {
         float: right;
         transform: rotate(270deg);
@@ -968,6 +1213,7 @@ margin-top: 2rem;
         top: 0;
         left: auto;
     }
+
     .toPrev {
         float: left;
         transform: rotate(270deg);
@@ -976,52 +1222,65 @@ margin-top: 2rem;
         bottom: auto;
         left: auto;
     }
+
     .luna-signup-right {
         min-height: 400px;
         padding: 20px 0;
         margin-left: 0;
     }
+
     .luna-steps {
         height: auto;
     }
+
     .luna-steps .step {
         padding: 0 15px;
         position: relative;
     }
+
     .steps-count,
     .button-container {
         padding-right: 15px;
     }
+
     .step-confirm .form-group {
         margin-bottom: 0;
         padding: 10px 0;
     }
+
     .step-confirm .control-label {
         font-size: 16px;
     }
+
     .step-confirm input,
     .step-confirm .bootstrap-select button {
         padding: 6px 15px;
         font-size: 16px;
     }
+
     .button-container {
         bottom: 15px;
     }
+
     .formLabel,
     .formInput,
     .step-label {
         font-size: 20px;
     }
+
     .luna-signup-left:after {
         display: none;
     }
+
     .confirm-label {
         text-align: left;
         margin-bottom: 5px;
     }
+
     .confirm-text {
         margin-bottom: 20px;
     }
+
     .step-confirm-buttons {
         padding: 15px 0;
     }
