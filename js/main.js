@@ -133,18 +133,30 @@ var lunaWizard = {
                         PAGECONTROLS.controls.lunaStepsFooterError.innerHTML = `Debe indicar su genero.`;
                         permitirAvanzar = false;
                     }
+
                     if (fg_isEmptyOrNull(PAGECONTROLS.controls.txtfechaNacimientoDia.value)
                         || fg_isEmptyOrNull(PAGECONTROLS.controls.cmbfechaNacimientoMes.value)
                         || fg_isEmptyOrNull(PAGECONTROLS.controls.txtfechaNacimientoAnio.value)
                     ) {
 
-                        $(PAGECONTROLS.controls.gpoDatefechaNacimiento).after('<span  class="span-error">Dato obligatorio</span>');
+                        fg_mostrar_error(PAGECONTROLS.controls.gpoDatefechaNacimiento, 'Dato obligatorio.');
+                        permitirAvanzar = false;
+                    }
+                    else if(PAGECONTROLS.controls.txtfechaNacimientoAnio.value.toString().length != 4){
+                        fg_mostrar_error(PAGECONTROLS.controls.gpoDatefechaNacimiento, 'El año debe ser de 4 digitos');
+                        permitirAvanzar = false;
+                    }
+                    else if(PAGECONTROLS.controls.txtfechaNacimientoAnio.value < 1900 ){
+                        fg_mostrar_error(PAGECONTROLS.controls.gpoDatefechaNacimiento, 'El año no es valido.');
                         permitirAvanzar = false;
                     }
 
                     break;
                 case '6':
                     if (!fg_valida_captura_seccion('stepBody_6')) {
+                        permitirAvanzar = false;
+                    }
+                    else if(!fg_validarRFC(PAGECONTROLS.controls.txtRFC.value)){
                         permitirAvanzar = false;
                     }
 
@@ -162,7 +174,7 @@ var lunaWizard = {
                     }
                     else {
                         if (!fg_validarEmail(PAGECONTROLS.controls.txtCorreo.value)) {
-                            $(PAGECONTROLS.controls.txtCorreo).after('<span  class="span-error">El formato es incorrecto.</span>');
+                            fg_mostrar_error(PAGECONTROLS.controls.txtCorreo, 'El formato es incorrecto.');
                             permitirAvanzar = false;
                         }
                     }
@@ -186,7 +198,7 @@ var lunaWizard = {
                     }
                     else {
                         if (!fg_isChecked_BtnChk(PAGECONTROLS.controls.btnChkAutorizo)) {
-                            $(PAGECONTROLS.controls.btnChkAutorizo).after('<span  class="span-error">Debe autorizar para continuar.</span>');
+                            fg_mostrar_error(PAGECONTROLS.controls.btnChkAutorizo, 'Debe autorizar para continuar.');
                             permitirAvanzar = false;
                         }
 
@@ -764,27 +776,27 @@ function getTemplateStep_11() {
     stepBody_11.innerHTML = tagStep;
 }
 
-function getTemplateAutorizado(_Autorizado) {
+function getTemplateAutorizado(_nivelAceptacion) {
 
     var formResultado = document.getElementById('formResultado');
 
     var tagsAutorizado = ``;
-    if (_Autorizado == 'SI') {
+    if (_nivelAceptacion == 1) {
         tagsAutorizado = `
-                          <img src='images/resultado_1.jpg' alt="Resultado" style="height:280px;" />
-                          <span class="procesandoValidacion_1">Has terminado tu preclasificación.<span>
-                          <span class="procesandoValidacion_2">En este momento no eres candidato aun ${OBJCaptura.btnSelAdquirir}, no te preocupes, te sugerimos mejorar tu historial créditicio y/o capacidad de pago para volver a aplicar. <span>
-                         `;
+        <span class="autorizado_Header">¡Felicidades!<span>
+        <div class="alert alert-primary" role="alert">
+           <h4 class="alert-heading">Según tu historial de crédito.</h4>
+           <span class="autorizado_Monto">Eres un candidato apto para el crédito.<span>
+      </div>
+        
+       `;
+
     }
     else {
         tagsAutorizado = `
-                          <span class="autorizado_Header">¡Felicidades, tu crédito a sido autorizado.!<span>
-                          <div class="alert alert-primary" role="alert">
-                             <h4 class="alert-heading">Según tu historial de crédito.</h4>
-                             <span class="autorizado_Monto"><i class="icon icon-coin-dollar"></i>$1,000,000.00<span>
-                             <small class="autorizado_subtexto">*Saldo Apróximado</small>
-                        </div>
-                          
+                          <img src='images/resultado_1.jpg' alt="Resultado" style="height:280px;" />
+                          <span class="procesandoValidacion_1">Has terminado tu precalificación.<span>
+                          <span class="procesandoValidacion_2">En este momento no eres candidato aun ${OBJCaptura.tipoCredito}, no te preocupes, te sugerimos mejorar tu historial créditicio y/o capacidad de pago para volver a aplicar. <span>
                          `;
 
     }
@@ -1190,7 +1202,7 @@ async function validarCredito() {
 
         console.log('Se valido el crédito?');
 
-        getTemplateAutorizado(ds.result[0].creditoAutorizado);
+        getTemplateAutorizado(ds.result[0].nivelAceptacion);
         PAGECONTROLS.controls.formSteps.hidden = true;
         PAGECONTROLS.controls.formResultado.hidden = false;
 

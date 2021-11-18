@@ -15,7 +15,8 @@ var _CLASS_UNCHECKED_ = `icon icon-checkbox-unchecked`;
 var _OK_ = 'OK';
 var _RESTRICCION_ = 'RESTRICCION';
 var _ERROR_ = 'ERROR';
-
+const moonLanding = new Date('July 20, 69 00:20:18');
+var _ANIO_ACTUAL_ = moonLanding.getFullYear();
 
 var formatter = new Intl.NumberFormat('es-MX', {
     style: 'currency',
@@ -26,6 +27,8 @@ var formatter = new Intl.NumberFormat('es-MX', {
 });
 
 const _API_ = `https://localhost:44375/api/preclasifica/`;
+//const _API_ = `http://loorenax-002-site3.ctempurl.com/api/preclasifica/`;
+
 
 function fg_mensaje_problema_tecnico(e) {
 
@@ -54,7 +57,7 @@ function fg_mensaje_problema_tecnico(e) {
 
 
     console.log(`funcion: ${name_funcion}`);
-    if(e !=null){
+    if (e != null) {
         console.log(`Error: ${e.message}`);
         console.log(`Trace: ${e}`);
     }
@@ -453,4 +456,41 @@ function fg_resultOK(_result) {
     }
 
     return resultadoOK;
+}
+
+function fg_validarRFC(_rfc) {
+    var valido = false;
+    try {
+        var strCorrecta;
+        strCorrecta = _rfc;
+        if (_rfc.length == 12) {
+            var valid = '^(([A-Z]|[a-z]){3})([0-9]{6})((([A-Z]|[a-z]|[0-9]){3}))';
+        } else {
+            var valid = '^(([A-Z]|[a-z]|\s){1})(([A-Z]|[a-z]){3})([0-9]{6})((([A-Z]|[a-z]|[0-9]){3}))';
+        }
+        var validRfc = new RegExp(valid);
+        var matchArray = strCorrecta.match(validRfc);
+        if (matchArray == null) {
+            valido = false;
+        }
+        else {
+            valido = true;
+        }
+    }
+    catch (e) {
+        fg_mensaje_problema_tecnico(e);
+    }
+
+    return valido;
+}
+
+function fg_mostrar_error(_Control, _Msg_Error) {
+
+    try {
+        $(_Control).after(`<span  class="span-error">${_Msg_Error}</span>`);
+
+    }
+    catch (e) {
+        fg_mensaje_problema_tecnico(e);
+    }
 }
