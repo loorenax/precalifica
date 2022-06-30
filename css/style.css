@@ -682,15 +682,15 @@ p {
 
 .step-title {
     color: var(--theme-font-color);
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: bold;
     margin-bottom: 1rem;
     text-align: center;
 }
 
-.step-sub-title {
+.step-subtitle {
     font-weight: var(--font-thin);
-    font-size: 1.75rem;
+    font-size: 1.25rem;
     border-bottom: 1px solid #EEE;
     padding-bottom: 15px;
     margin-bottom: 15px;

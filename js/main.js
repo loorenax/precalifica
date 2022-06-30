@@ -1,11 +1,18 @@
 var PAGECONTROLS;
 var OBJCaptura;
 var OBJImageStpes = [
-    'images/banks-store_545x545.png' //0
+    'images/img_01_QueEstasBuscando.PNG' //0
     , 'images/banks.png'             //1
     , 'images/analysis.png'          //2
     , 'images/secure.png'            //3
     , 'images/bureau.png'            //4
+    , 'images/resultado_1.jpg'       //5
+    , 'images/resultado_2.jpg'       //6
+    , 'images/step_03_compartenos_tus_datos.jpg'   //7
+    , 'images/step_04_historial_credito.jpg'       //8
+    , 'images/step_07_Asesores.JPG'                //9        
+    , 'images/step_06_AutorizoAsesores.JPG'                //10            
+    , 'images/step_05_comparte_tus_datosJPG.jpg'                //11
 ];
 
 var DtMeses = [
@@ -23,6 +30,28 @@ var DtMeses = [
     , { id: 12, mes: 'Diciembre' }
 ];
 var DtColonias;
+
+var step_2_titulos = {
+   btnSelAdquirir: 'Valor aproximado del inmueble que deseas comprar'
+ , btnSelMejorar: 'Monto de tu hipoteca actual' 
+ , btnSelObtener: `Monto del crédito que necesitas.` 
+}
+
+var step_2_subtitulos = {
+    btnSelAdquirir: 'Este dato nos ayuda a conocer el Aforo que los Bancos pueden otorgarte.'
+  , btnSelMejorar: 'Este dato nos ayuda a conocer el máximo de crédito que los Bancos te pueden otorgar.' 
+  , btnSelObtener: `<span class="text-info">(Te recordamos que únicamente se aceptan casa habitación  y departamentos)</span><br>Este dato nos ayuda a conocer el máximo de crédito que los Bancos te pueden otorgar.` 
+ }
+ 
+ var DtEstadosCivil = [
+    {id:'1', descripcion:'Soltero'}
+  , {id:'2', descripcion:'Casado por bienes  Separados'}
+  , {id:'3', descripcion:'Casado Sociedad Conyugal'}
+];
+var DtActividades = [
+  {id:'1', descripcion:'Empleado'}
+, {id:'2', descripcion:'Independiente'}
+];
 
 
 
@@ -69,7 +98,7 @@ var lunaWizard = {
     changeStep: function (currentStep, nextStep) {
         var self = this;
         var permitirAvanzar = true;
-
+         console.log(`Inicia nextStep en: ${nextStep}`);   
 
         $('html,body').animate({ scrollTop: 0 }, 'slow');
 
@@ -116,38 +145,24 @@ var lunaWizard = {
                     }
                     break;
                 case '3':
-                    if (PAGECONTROLS.controls.txtMonto.value == null || PAGECONTROLS.controls.txtMonto.value == 0) {
-                        PAGECONTROLS.controls.lunaStepsFooterError.innerHTML = `Por favor debe capturar un monto.`;
+                    if (!fg_valida_captura_seccion('stepBody_3')) {
                         permitirAvanzar = false;
                     }
                     break;
                 case '4':
                     if (!fg_valida_captura_seccion('stepBody_4')) {
-                        PAGECONTROLS.controls.lunaStepsFooterError.innerHTML = `Por favor debe capturar su nombre y su primer apellido.`;
                         permitirAvanzar = false;
+                    }
+                    else if (!fg_isChecked_BtnChk(PAGECONTROLS.controls.btnChkHistorialCreditoBueno)) {
+
+                        //Si es no entonces ya lo enviamos a que termine
+                        nextStep = 90;
+                        var stepscount = document.getElementsByClassName('steps-count')[0].hidden = true;
                     }
 
                     break;
                 case '5':
-                    if (OBJCaptura.Genero == null) {
-                        PAGECONTROLS.controls.lunaStepsFooterError.innerHTML = `Debe indicar su genero.`;
-                        permitirAvanzar = false;
-                    }
-
-                    if (fg_isEmptyOrNull(PAGECONTROLS.controls.txtfechaNacimientoDia.value)
-                        || fg_isEmptyOrNull(PAGECONTROLS.controls.cmbfechaNacimientoMes.value)
-                        || fg_isEmptyOrNull(PAGECONTROLS.controls.txtfechaNacimientoAnio.value)
-                    ) {
-
-                        fg_mostrar_error(PAGECONTROLS.controls.gpoDatefechaNacimiento, 'Dato obligatorio.');
-                        permitirAvanzar = false;
-                    }
-                    else if(PAGECONTROLS.controls.txtfechaNacimientoAnio.value.toString().length != 4){
-                        fg_mostrar_error(PAGECONTROLS.controls.gpoDatefechaNacimiento, 'El año debe ser de 4 digitos');
-                        permitirAvanzar = false;
-                    }
-                    else if(PAGECONTROLS.controls.txtfechaNacimientoAnio.value < 1900 ){
-                        fg_mostrar_error(PAGECONTROLS.controls.gpoDatefechaNacimiento, 'El año no es valido.');
+                    if (!fg_valida_captura_seccion('stepBody_5')) {
                         permitirAvanzar = false;
                     }
 
@@ -156,10 +171,9 @@ var lunaWizard = {
                     if (!fg_valida_captura_seccion('stepBody_6')) {
                         permitirAvanzar = false;
                     }
-                    else if(!fg_validarRFC(PAGECONTROLS.controls.txtRFC.value)){
-                        permitirAvanzar = false;
-                    }
 
+                    nextStep = 95;
+                    var stepscount = document.getElementsByClassName('steps-count')[0].hidden = true;
                     break;
                 case '7':
                     if (!fg_valida_captura_seccion('stepBody_7')) {
@@ -269,18 +283,35 @@ var lunaWizard = {
             prevStepEl.css("display", "inline-block");
         }
 
-        if (PAGECONTROLS.controls.stepBody_9.className.indexOf('step-active') != -1) {
+        if (PAGECONTROLS.controls.stepBody_6.className.indexOf('step-active') != -1) {
             registrarProspecto();
         }
 
 
-        if (PAGECONTROLS.controls.stepBody_11.className.indexOf('step-active') != -1) {
+        //Solo para ocultar el footer y ya no mostrar el atras y el siguiente
+        if (PAGECONTROLS.controls.stepBody_11.className.indexOf('step-active') != -1
+            || PAGECONTROLS.controls.stepBody_Termina_HistorialMalo.className.indexOf('step-active') != -1
+            || PAGECONTROLS.controls.stepBody_Felicidades.className.indexOf('step-active') != -1
+            ) {
 
             PAGECONTROLS.controls.stepFooter.hidden = true;
+        }
+
+        if (PAGECONTROLS.controls.stepBody_11.className.indexOf('step-active') != -1) {
             validarCredito();
         }
 
+        if (PAGECONTROLS.controls.stepBody_Termina_HistorialMalo.className.indexOf('step-active') != -1) {
+            irsetProspectoMalHistorial();
+        }
 
+        if (PAGECONTROLS.controls.stepBody_Felicidades.className.indexOf('step-active') != -1) {
+
+            // El el punto dnde se envia el codigo ahi se guarda los datos del prospecto
+            //En este punto confirmamos los datos y se guarda los datos de la preclasificación
+            irsetProspectoAutenticado();
+        }
+                
     },
     /**
      * Show Validation Message
@@ -554,13 +585,13 @@ function getTemplateBtnChk(_idBtnChk, _isChecked, _Etiqueta, _Propiedad_Adiciona
 function getTemplateStep_1() {
 
     var stepBody_1 = document.getElementById('stepBody_1');
-    var tagOpciones = getTemplateBtnTitleSubTitle('btnSelAdquirir', 'Adquirir un inmueble', 'Crédito para comprar una vivienda.');
-    tagOpciones += getTemplateBtnTitleSubTitle('btnSelMejorar', 'Mejorar mi crédito actual', 'Refinanciar tu crédito hipotecario.');
-    tagOpciones += getTemplateBtnTitleSubTitle('btnSelObtener', 'Obtener liquidez', 'Utilizando tu propiedad como garantía.');
+    var tagOpciones = getTemplateBtnTitleSubTitle('btnSelAdquirir', 'ADQUISICION', 'Quiero comprar una casa');
+    tagOpciones += getTemplateBtnTitleSubTitle('btnSelMejorar', 'MEJORA DE HIPOTECA', 'Quiero refinanciar mi crédito actual');
+    tagOpciones += getTemplateBtnTitleSubTitle('btnSelObtener', 'LIQUIDEZ', 'Quiero liquidez utilizando mi propiedad como garantía');
 
 
     var tagStep = getTemplateSeccionBodyStep('¿Que estas buscando?'
-        , 'Elige el tipo de crédito que deseas para ofrecerte una solución adecuada a tus necesidades.'
+        , ''
         , tagOpciones
         , 0
     );
@@ -571,15 +602,20 @@ function getTemplateStep_1() {
 function getTemplateStep_2() {
 
     var stepBody_2 = document.getElementById('stepBody_2');
-    var tagOpciones = getTemplateBtnTitleSubTitle('btnSelMenos900', 'Menos de $900 mil', '');
-    tagOpciones += getTemplateBtnTitleSubTitle('btnSelEntre900y2Mil', 'Entre $900 mil y $2 millones', '');
-    tagOpciones += getTemplateBtnTitleSubTitle('btnSelEntre2y3', 'Entre $2 millones y $3 millones', '');
-    tagOpciones += getTemplateBtnTitleSubTitle('btnSelEntre3y4', 'Entre $3 millones y $4 millones', '');
-    tagOpciones += getTemplateBtnTitleSubTitle('btnSelMasde4Mil', 'Más de $4 millones', '');
+    // var tagOpciones = getTemplateBtnTitleSubTitle('btnSelMenos900', 'Menos de $900 mil', '');
+    // tagOpciones += getTemplateBtnTitleSubTitle('btnSelEntre900y2Mil', 'Entre $900 mil y $2 millones', '');
+    // tagOpciones += getTemplateBtnTitleSubTitle('btnSelEntre2y3', 'Entre $2 millones y $3 millones', '');
+    // tagOpciones += getTemplateBtnTitleSubTitle('btnSelEntre3y4', 'Entre $3 millones y $4 millones', '');
+    // tagOpciones += getTemplateBtnTitleSubTitle('btnSelMasde4Mil', 'Más de $4 millones', '');
 
-
-    var tagStep = getTemplateSeccionBodyStep('¿Cuál es el valor aproximado del inmueble que buscas?'
-        , 'El valor del inmueble nos ayuda a estimar el máximo de crédito que podrías conseguir.'
+    var tagOpciones = getTemplateBtnTitleSubTitle('btnValorAproximado_1', 'Menos de 500 mil ', '');
+        tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximado_2', 'De $500 mil  a $1 millón', '');
+        tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximado_3', 'Entre $1millón y  $2 millones', '');
+        tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximado_4', 'Entre $2millones y  $2 millones', '');
+        tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximado_5', 'De $4 millones o más…', '');
+    
+    var tagStep = getTemplateSeccionBodyStep(''
+        , ''
         , tagOpciones
         , 0
     );
@@ -587,7 +623,7 @@ function getTemplateStep_2() {
     stepBody_2.innerHTML = tagStep;
 }
 
-function getTemplateStep_3() {
+function getTemplateStep_3_Yano() {
 
     var stepBody_3 = document.getElementById('stepBody_3');
     var tagOpciones = getTemplateTextBoxNum('txtMonto', '0', 'Monto', 'required');
@@ -601,24 +637,57 @@ function getTemplateStep_3() {
     stepBody_3.innerHTML = tagStep;
 }
 
-function getTemplateStep_4() {
+//Compártenos tus datos 
+function getTemplateStep_3() {
 
-    var stepBody_4 = document.getElementById('stepBody_4');
-    var tagOpciones = getTemplateTextBox('txtNombres', '', 'Nombre(s)', 'required');
-    tagOpciones += getTemplateTextBox('txtPrimerApellido', '', 'Apellido Paterno', 'required');
-    tagOpciones += getTemplateTextBox('txtSegundoApellido', '', 'Apellido Materno', '');
+    var stepBody_4 = document.getElementById('stepBody_3');
+    
+    var tagOpciones = `<div class="col-xs-12 col-sm-12 col-md-12">
+                            ${getTemplateTextBox('txtNombres', '', 'Nombre(s)', 'required')}
+                       </div>`;
 
-    var tagStep = getTemplateSeccionBodyStep('¿Cuál es tu nombre?'
+    tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6">
+                       ${getTemplateTextBox('txtPrimerApellido', '', 'Apellido Paterno', 'required')}
+                  </div>`;
+
+    tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6">
+                  ${getTemplateTextBox('txtSegundoApellido', '', 'Apellido Materno', '')}
+             </div>`;
+
+    tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6">
+             ${getTemplateSelect('cmbEstadoCivil', '', 'Estado Civil', '')}
+    </div>`;
+
+    tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6">
+             ${getTemplateSelect('cmbActividad', '', 'Actividad', '')}
+    </div>`;
+
+    tagOpciones = `<div class="row">${tagOpciones}</div>`;
+
+    var tagStep = getTemplateSeccionBodyStep('Compártenos tus datos'
         , 'Tus datos se protegerán bajo estándares internacionales en manejo de datos y encriptación para resguardo.'
         , tagOpciones
-        , 2
+        , 7
     );
 
     stepBody_4.innerHTML = tagStep;
 }
 
+function getTemplateStep_4() {
 
-function getTemplateStep_5() {
+    var stepBody_4 = document.getElementById('stepBody_4');
+    var tagOpciones = getTemplateBtnChk('btnChkHistorialCreditoBueno', '', '¿Tu historial de buró de crédito es bueno? ', 'required');
+
+    var tagStep = getTemplateSeccionBodyStep('Recuerda que al momento de estar tramitando un crédito con UN BANCO es prioritario tener BUEN HISTORIAL DE BURO DE CREDITO '
+        , ''
+        , tagOpciones
+        , 8
+    );
+
+    stepBody_4.innerHTML = tagStep;
+}
+
+function getTemplateStep_5_Yano() {
 
     var stepBody_5 = document.getElementById('stepBody_5');
     var tagOpciones = getTemplateBtnTitleSubTitle('btnSelMujer', 'Mujer', '');
@@ -634,7 +703,7 @@ function getTemplateStep_5() {
     stepBody_5.innerHTML = tagStep;
 }
 
-function getTemplateStep_6() {
+function getTemplateStep_6_Yano() {
 
     var stepBody_6 = document.getElementById('stepBody_6');
     var tagOpciones = getTemplateTextBox('txtRFC', '', 'RFC', 'required')
@@ -648,7 +717,7 @@ function getTemplateStep_6() {
     stepBody_6.innerHTML = tagStep;
 }
 
-function getTemplateStep_7() {
+function getTemplateStep_7_Yano() {
 
     var stepBody_7 = document.getElementById('stepBody_7');
 
@@ -677,9 +746,9 @@ function getTemplateStep_7() {
     stepBody_7.innerHTML = tagStep;
 }
 
-function getTemplateStep_8() {
+function getTemplateStep_5() {
 
-    var stepBody_8 = document.getElementById('stepBody_8');
+    var stepBody_8 = document.getElementById('stepBody_5');
 
     var tagOpciones = `<div class="row">
                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -690,68 +759,67 @@ function getTemplateStep_8() {
                           </div>
                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                               <p>
-                                Al dar clic en Siguiente, acepto recibir notificaciones por Whatsapp y que mis datos personales sean tratados para las finalidades descritas en el <strong>Aviso de Privacidad</strong>, y acepto los <strong>Términos y Condiciones de Uso</strong>.
+                                Al dar clic en Siguiente, acepto recibir notificaciones por Whatsapp y correo electrónico y que mis datos personales sean tratados para las finalidades descritas en el <strong>Aviso de Privacidad</strong>, y acepto los <strong>Términos y Condiciones de Uso</strong>.
                               </p>
                           </div>
 
                         </div>`;
 
     var tagStep = getTemplateSeccionBodyStep('Compártenos tus datos de contacto'
-        , 'Enviaremos un código de confirmación a tu celular, y a tu correo información adicional a tu precalificación.'
+        , 'Enviaremos un código de confirmación a tu celular.'
         , tagOpciones
-        , 3
+        , 11
     );
 
     stepBody_8.innerHTML = tagStep;
 }
 
-function getTemplateStep_9() {
+function getTemplateStep_6() {
 
-    var stepBody_9 = document.getElementById('stepBody_9');
-    var tagOpciones = ``;
-    tagOpciones += `<div id="step_9_Wait" style="width: 100%; text-align: center;">
+    var stepBody = document.getElementById('stepBody_6');
+
+    var tagOpciones = '';
+    tagOpciones += `<div id="step_6_Wait" style="width: 100%; text-align: center;">
                         <img src='images/loading.gif' alt="loading" style="height:280px;" />                    
                         <h3>Procesando envio de código de validación</h3>
                    </div>`;
-    tagOpciones += `<div id="step_9_row" class="row" hidden>
-                          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                              ${getTemplateTextBoxNum('txtCodigoValidacion', '', 'Tu número', 'required')}
-                          </div>
-                          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                              <button id="btnReenviarCodigo" type="button" class="btn btn-reenvio">Reenviar Código</button>
-                          </div>
-                        </div>`;
 
-    var tagStep = getTemplateSeccionBodyStep('Escribe el código que recibiste en tu correo.'
-        , ''
-        , tagOpciones
-        , 4
-    );
-
-    stepBody_9.innerHTML = tagStep;
-}
-
-function getTemplateStep_10() {
-
-    var stepBody_10 = document.getElementById('stepBody_10');
-
-    var tagOpciones = `<div class="row">
+    tagOpciones += `<div id="step_6_row" class="row" hidden>
                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                               ${getTemplateBtnChk('btnChkAutorizo', false, 'Autorizo a MAAY Capital a consultar mi historial crediticio de cualquier SIC que estime conveniente.')}
                           </div>
                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                              ${getTemplateTextBoxNum('txtCodigoValidacion2', '', 'Ingresa tu código nuevamente', 'required')}
+                              ${getTemplateTextBoxNum('txtCodigoValidacion', '', 'Ingresa tu código', 'required')}
                           </div>
                         </div>`;
 
-    var tagStep = getTemplateSeccionBodyStep('Autorización para consultar historial crediticio'
+    var tagStep = getTemplateSeccionBodyStep('Autorizo que un asesor certificado se ponga en contacto conmigo para continuar con mi trámite.'
         , ''
         , tagOpciones
-        , 4
+        , 10
     );
 
-    stepBody_10.innerHTML = tagStep;
+    stepBody.innerHTML = tagStep;
 }
+function getTemplateStep_7(){}
+
+/*Aqui termina */
+function getTemplateStep_Felicidades(){
+
+    var stepBody = document.getElementById('stepBody_Felicidades');
+
+   var tagStep = getTemplateSeccionBodyStep('¡Felicidades!'
+       , ''
+       , '<h3 class="text-center p-2">Un asesor certificado por la AMHEX se pondrá en contacto contigo para continuar con tu trámite.</h3>'
+       , 9
+   );
+
+   stepBody.innerHTML = tagStep;
+    
+}
+function getTemplateStep_8(){}
+function getTemplateStep_9(){}
+function getTemplateStep_10(){}
 
 function getTemplateStep_11() {
 
@@ -775,6 +843,29 @@ function getTemplateStep_11() {
 
     stepBody_11.innerHTML = tagStep;
 }
+
+/**
+ * Viene de ADQUISICIÓN Step 4 ¿Tu historial de buró de crédito es bueno?  = NO
+ */
+function getTemplateStep_Termina_HistorialMalo() {
+
+
+
+    var stepBody = document.getElementById('stepBody_Termina_HistorialMalo');
+
+
+    var tagOpciones = ``;
+
+    var tagStep = getTemplateSeccionBodyStep(`Lamentamos no poder atenderte en este momento. <br><br>Te sugerimos mejorar tu historial crediticio y volver a contactarnos. 
+    <br><br>Esperamos apoyarte en un futuro para cumplir tus sueños.`
+        , ''
+        , tagOpciones
+        , 6
+    );
+
+    stepBody.innerHTML = tagStep;
+}
+
 
 function getTemplateAutorizado(_nivelAceptacion) {
 
@@ -890,8 +981,14 @@ function btnSelQuebuscasClick() {
         var idspan = `span${btn.id}`;
         var spanText = document.getElementById(idspan).innerHTML;
         OBJCaptura.tipoCredito = spanText;
-
         fg_switch_buttons_listado('stepBody_1', btn);
+
+        var stepBody_2 = document.getElementById('stepBody_2');
+        var steptitle = stepBody_2.getElementsByClassName('step-title')[0];
+        var stepsubtitle = stepBody_2.getElementsByClassName('step-subtitle')[0];
+
+        steptitle.innerHTML = step_2_titulos[btn.id];
+        stepsubtitle.innerHTML = step_2_subtitulos[btn.id];
 
         PAGECONTROLS.controls.btnNext.click();
     }
@@ -924,6 +1021,17 @@ function txtMontchange() {
     console.log(PAGECONTROLS.controls.txtMonto.value);
 }
 
+function btnChkHistorialCreditoBuenoClick() {
+    try {
+
+        var btn = this;
+        fg_ChekClik(btn);
+    }
+    catch (e) {
+        fg_mensaje_problema_tecnico(e);
+    }
+}
+
 /*================== STEP 5 ============================ */
 function btnSelGeneroClick() {
 
@@ -953,6 +1061,7 @@ function btnChkAutorizoClick() {
         fg_mensaje_problema_tecnico(e);
     }
 }
+
 
 
 async function searchColonias() {
@@ -1039,8 +1148,8 @@ async function registrarProspecto() {
         const ds = await setProspecto();
         if (fg_resultOK(ds.result)) {
             OBJCaptura.idProspecto = ds.result[0].ID;
-            PAGECONTROLS.controls.step_9_Wait.hidden = true;
-            PAGECONTROLS.controls.step_9_row.hidden = false;
+            PAGECONTROLS.controls.step_6_Wait.hidden = true;
+            PAGECONTROLS.controls.step_6_row.hidden = false;
         }
 
     }
@@ -1049,25 +1158,29 @@ async function registrarProspecto() {
     }
 }
 function obtenerValores(){
-    OBJCaptura.ingresoMensual = PAGECONTROLS.controls.txtMonto.value;
+    // OBJCaptura.ingresoMensual = PAGECONTROLS.controls.txtMonto.value;
 
     OBJCaptura.nombres = PAGECONTROLS.controls.txtNombres.value;
     OBJCaptura.primerApellido = PAGECONTROLS.controls.txtPrimerApellido.value;
     OBJCaptura.segundoApellido = PAGECONTROLS.controls.txtSegundoApellido.value;
 
-    OBJCaptura.fechaNacimiento = PAGECONTROLS.controls.txtfechaNacimientoDia.value
-    + '/' + PAGECONTROLS.controls.cmbfechaNacimientoMes.value 
-    + '/' + PAGECONTROLS.controls.txtfechaNacimientoAnio.value
-    ;
+    // OBJCaptura.fechaNacimiento = PAGECONTROLS.controls.txtfechaNacimientoDia.value
+    // + '/' + PAGECONTROLS.controls.cmbfechaNacimientoMes.value 
+    // + '/' + PAGECONTROLS.controls.txtfechaNacimientoAnio.value
+    // ;
 
-    OBJCaptura.rfc = PAGECONTROLS.controls.txtRFC.value;
+    // OBJCaptura.rfc = PAGECONTROLS.controls.txtRFC.value;
 
-    OBJCaptura.idCodigoPostal = PAGECONTROLS.controls.cmbColonia.value;
-    OBJCaptura.calleyNo = PAGECONTROLS.controls.txtcalleyNo.value;
+    // OBJCaptura.idCodigoPostal = PAGECONTROLS.controls.cmbColonia.value;
+    // OBJCaptura.calleyNo = PAGECONTROLS.controls.txtcalleyNo.value;
 
     OBJCaptura.celular = PAGECONTROLS.controls.txtCelular.value;
     OBJCaptura.correo = PAGECONTROLS.controls.txtCorreo.value;
 
+    OBJCaptura.idEstadoCivil = PAGECONTROLS.controls.cmbEstadoCivil.value;
+    OBJCaptura.idActividad = PAGECONTROLS.controls.cmbActividad.value;
+    OBJCaptura.tieneBuenHistorial = fg_isChecked_BtnChk(PAGECONTROLS.controls.btnChkHistorialCreditoBueno);
+    OBJCaptura.autorizoContactoAsesor = fg_isChecked_BtnChk(PAGECONTROLS.controls.btnChkAutorizo);    
 }
 
 async function reenviarCodigo() {
@@ -1162,8 +1275,6 @@ async function irAutenticarCodigoValidacion() {
 
 }
 
-
-
 async function irValidarCredito() {
 
 
@@ -1211,6 +1322,91 @@ async function validarCredito() {
 }
 
 
+async function setProspectoMalHistorial() {
+    // const filtros = {
+    //     Email:'mirra.espinoza@gmail.com',
+    //     Password:'test'
+    //     };
+    obtenerValores();
+    const urlAPI = `${_API_}setProspectoMalHistorial`;
+    const response = await fetch(
+        urlAPI
+        , {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            //credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json;charset=UTF-8'
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            body: JSON.stringify(OBJCaptura)
+        }
+    );
+
+    const data = await response.json();
+
+    return data;
+}
+
+async function irsetProspectoMalHistorial() {
+
+    const ds = await setProspectoMalHistorial();
+    
+    console.log('Termino');
+    setTimeout(function(){
+        console.log('Iniciar');
+        location.href = location.href
+    }, 5000);
+}
+
+async function setProspectoAutenticado() {
+    // const filtros = {
+    //     Email:'mirra.espinoza@gmail.com',
+    //     Password:'test'
+    //     };
+    obtenerValores();
+    const urlAPI = `${_API_}setProspectoAutenticado`;
+    const response = await fetch(
+        urlAPI
+        , {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            //credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json;charset=UTF-8'
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            body: JSON.stringify(OBJCaptura)
+        }
+    );
+
+    const data = await response.json();
+
+    return data;
+}
+
+async function irsetProspectoAutenticado() {
+
+    const ds = await setProspectoAutenticado();
+    
+    console.log('Termino');
+    setTimeout(function(){
+        console.log('Iniciar');
+        location.href = location.href
+    }, 5000);
+
+}
+
+
+
 $(document).ready(function () {
 
     getTemplateStep_1();
@@ -1224,6 +1420,9 @@ $(document).ready(function () {
     getTemplateStep_9();
     getTemplateStep_10();
     getTemplateStep_11();
+
+    getTemplateStep_Termina_HistorialMalo();
+    getTemplateStep_Felicidades();
 
     PAGECONTROLS = fg_setIFRAMEControls('lunaSignUpContainer');
     OBJCaptura = new Object();
@@ -1253,27 +1452,32 @@ $(document).ready(function () {
     PAGECONTROLS.controls.btnSelObtener.addEventListener('click', btnSelQuebuscasClick);
 
 
-    PAGECONTROLS.controls.btnSelMenos900.addEventListener('click', btnSelValorAproxClick);
-    PAGECONTROLS.controls.btnSelEntre900y2Mil.addEventListener('click', btnSelValorAproxClick);
-    PAGECONTROLS.controls.btnSelEntre2y3.addEventListener('click', btnSelValorAproxClick);
-    PAGECONTROLS.controls.btnSelEntre3y4.addEventListener('click', btnSelValorAproxClick);
-    PAGECONTROLS.controls.btnSelMasde4Mil.addEventListener('click', btnSelValorAproxClick);
+    PAGECONTROLS.controls.btnValorAproximado_1.addEventListener('click', btnSelValorAproxClick);
+    PAGECONTROLS.controls.btnValorAproximado_2.addEventListener('click', btnSelValorAproxClick);
+    PAGECONTROLS.controls.btnValorAproximado_3.addEventListener('click', btnSelValorAproxClick);
+    PAGECONTROLS.controls.btnValorAproximado_4.addEventListener('click', btnSelValorAproxClick);
+    PAGECONTROLS.controls.btnValorAproximado_5.addEventListener('click', btnSelValorAproxClick);
+    
+    
 
-    PAGECONTROLS.controls.btnSelMujer.addEventListener('click', btnSelGeneroClick);
-    PAGECONTROLS.controls.btnSelHombre.addEventListener('click', btnSelGeneroClick);
 
-    PAGECONTROLS.controls.btnReenviarCodigo.addEventListener('click', btnReenviarCodigoClick);
+    // PAGECONTROLS.controls.btnSelMujer.addEventListener('click', btnSelGeneroClick);
+    // PAGECONTROLS.controls.btnSelHombre.addEventListener('click', btnSelGeneroClick);
 
-    //PAGECONTROLS.controls.txtMonto.addEventListener("change", txtMontchange);
+    // PAGECONTROLS.controls.btnReenviarCodigo.addEventListener('click', btnReenviarCodigoClick);
 
-    fg_cargar_combo_from_List(PAGECONTROLS.controls.cmbfechaNacimientoMes, 'id', 'mes', DtMeses, false);
+    // fg_cargar_combo_from_List(PAGECONTROLS.controls.cmbfechaNacimientoMes, 'id', 'mes', DtMeses, false);
 
-    PAGECONTROLS.controls.txtCP.addEventListener('change', txtCPOnChange);
+    fg_cargar_combo_from_List(PAGECONTROLS.controls.cmbEstadoCivil, 'id', 'descripcion', DtEstadosCivil, false);
+    fg_cargar_combo_from_List(PAGECONTROLS.controls.cmbActividad, 'id', 'descripcion', DtActividades, false);
+
+    // PAGECONTROLS.controls.txtCP.addEventListener('change', txtCPOnChange);
 
     PAGECONTROLS.controls.btnChkAutorizo.addEventListener('click', btnChkAutorizoClick);
 
-
-
+    PAGECONTROLS.controls.btnChkHistorialCreditoBueno.addEventListener('click', btnChkHistorialCreditoBuenoClick);
+    
+    
     /**
      * Tuna Signup Form Wizard
      * Let's Start

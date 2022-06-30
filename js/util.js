@@ -367,7 +367,6 @@ function fg_switch_buttons_listado(_strBtnGpo, _btnClick) {
     //Primero reseteamos la clase a todos los buttons del grupo; se esperan todos apliquen el mismo criterio de cambio de listado
     $.each(tool.controls, function (key, value) {
         if (value.tagName == 'BUTTON') {
-            console.log(value.classList.value);
             value.classList = 'btn bg-segundo-plano btn-block';
         }
     })
