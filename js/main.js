@@ -144,79 +144,76 @@ var lunaWizard = {
                         permitirAvanzar = false;
                     }
                     break;
-                case '3':
-                    if (!fg_valida_captura_seccion('stepBody_3')) {
-                        permitirAvanzar = false;
-                    }
-                    break;
-                case '4':
-                    if (!fg_valida_captura_seccion('stepBody_4')) {
-                        permitirAvanzar = false;
-                    }
-                    else if (!fg_isChecked_BtnChk(PAGECONTROLS.controls.btnChkHistorialCreditoBueno)) {
+                    case '3':
+                        if (OBJCaptura.valorAproximado == null) {
+                            PAGECONTROLS.controls.lunaStepsFooterError.innerHTML = `Por favor debe seleccionar una opción para avanzar.`;
+                            permitirAvanzar = false;
+                        }
 
-                        //Si es no entonces ya lo enviamos a que termine
-                        nextStep = 90;
-                        var stepscount = document.getElementsByClassName('steps-count')[0].hidden = true;
-                    }
+                        console.log(`OBJCaptura.tipoCreditoID: ${OBJCaptura.tipoCreditoID}`);
+                        if(permitirAvanzar){
+                            if(OBJCaptura.tipoCreditoID != 'btnSelMejorar'){
+                                console.log(`nextStep: ${nextStep}`);
+                                nextStep = nextStep + 1;
+                                console.log(`nextStep: ${nextStep}`);
+                            }                            
+                        }
 
-                    break;
-                case '5':
+
+                        break;                    
+                        case '4':
+                            if (OBJCaptura.valorAproximadoMejorar == null) {
+                                PAGECONTROLS.controls.lunaStepsFooterError.innerHTML = `Por favor debe seleccionar una opción para avanzar.`;
+                                permitirAvanzar = false;
+                            }
+                            break;                    
+    
+                        case '5':
                     if (!fg_valida_captura_seccion('stepBody_5')) {
                         permitirAvanzar = false;
                     }
-
                     break;
                 case '6':
                     if (!fg_valida_captura_seccion('stepBody_6')) {
                         permitirAvanzar = false;
                     }
+                    else {
 
-                    nextStep = 95;
-                    var stepscount = document.getElementsByClassName('steps-count')[0].hidden = true;
+                        var respuesta = fg_getResultSwitch('BtnGpo_HistorialCreditoBueno');
+                        if (!fg_isEmptyOrNull(respuesta)) {
+
+                            //Si es no entonces ya lo enviamos a que termine
+                            if(respuesta == 'NO'){
+                                nextStep = 90;
+                                var stepscount = document.getElementsByClassName('steps-count')[0].hidden = true;    
+                            }
+                        }
+                        else{
+                            permitirAvanzar = false;
+                            var BtnGpo_HistorialCreditoBueno = document.getElementById('BtnGpo_HistorialCreditoBueno');
+                            fg_mostrar_error(BtnGpo_HistorialCreditoBueno, 'Debe seleccionar una opción.')                            
+                        }    
+                    }                    
                     break;
                 case '7':
                     if (!fg_valida_captura_seccion('stepBody_7')) {
                         permitirAvanzar = false;
                     }
 
-
                     break;
                 case '8':
                     if (!fg_valida_captura_seccion('stepBody_8')) {
                         permitirAvanzar = false;
                     }
-                    else {
-                        if (!fg_validarEmail(PAGECONTROLS.controls.txtCorreo.value)) {
-                            fg_mostrar_error(PAGECONTROLS.controls.txtCorreo, 'El formato es incorrecto.');
-                            permitirAvanzar = false;
-                        }
-                    }
+                    // else {
+                    //     if (!fg_isChecked_BtnChk(PAGECONTROLS.controls.btnChkAutorizo)) {
+                    //         fg_mostrar_error(PAGECONTROLS.controls.btnChkAutorizo, 'Debe autorizar para continuar.');
+                    //         permitirAvanzar = false;
+                    //     }
+                    // }
 
-                    break;
-                case '9':
-                    if (!fg_valida_captura_seccion('stepBody_9')) {
-                        permitirAvanzar = false;
-                    }
-
-                    if (permitirAvanzar && !OBJCaptura.codigoAutenticado) {
-                        permitirAvanzar = false;
-                         irAutenticarCodigoValidacion()
-                    }
-
-                    break;
-
-                case '10':
-                    if (!fg_valida_captura_seccion('stepBody_10')) {
-                        permitirAvanzar = false;
-                    }
-                    else {
-                        if (!fg_isChecked_BtnChk(PAGECONTROLS.controls.btnChkAutorizo)) {
-                            fg_mostrar_error(PAGECONTROLS.controls.btnChkAutorizo, 'Debe autorizar para continuar.');
-                            permitirAvanzar = false;
-                        }
-
-                    }
+                    nextStep = 95;
+                    var stepscount = document.getElementsByClassName('steps-count')[0].hidden = true;
                     break;
             }
 
@@ -297,9 +294,9 @@ var lunaWizard = {
             PAGECONTROLS.controls.stepFooter.hidden = true;
         }
 
-        if (PAGECONTROLS.controls.stepBody_11.className.indexOf('step-active') != -1) {
-            validarCredito();
-        }
+        // if (PAGECONTROLS.controls.stepBody_12.className.indexOf('step-active') != -1) {
+        //     validarCredito();
+        // }
 
         if (PAGECONTROLS.controls.stepBody_Termina_HistorialMalo.className.indexOf('step-active') != -1) {
             irsetProspectoMalHistorial();
@@ -637,10 +634,58 @@ function getTemplateStep_3_Yano() {
     stepBody_3.innerHTML = tagStep;
 }
 
-//Compártenos tus datos 
+
 function getTemplateStep_3() {
 
-    var stepBody_4 = document.getElementById('stepBody_3');
+    var stepBody = document.getElementById('stepBody_3');
+    // var tagOpciones = getTemplateBtnTitleSubTitle('btnSelMenos900', 'Menos de $900 mil', '');
+    // tagOpciones += getTemplateBtnTitleSubTitle('btnSelEntre900y2Mil', 'Entre $900 mil y $2 millones', '');
+    // tagOpciones += getTemplateBtnTitleSubTitle('btnSelEntre2y3', 'Entre $2 millones y $3 millones', '');
+    // tagOpciones += getTemplateBtnTitleSubTitle('btnSelEntre3y4', 'Entre $3 millones y $4 millones', '');
+    // tagOpciones += getTemplateBtnTitleSubTitle('btnSelMasde4Mil', 'Más de $4 millones', '');
+
+    var tagOpciones =  getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_1', 'Menos de 500 mil ', '');
+        tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_2', 'De $500 mil  a $1 millón', '');
+        tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_3', 'Entre $1millón y  $2 millones', '');
+        tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_4', 'Entre $2millones y  $2 millones', '');
+        tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_5', 'De $4 millones o más…', '');
+    
+    var tagStep = getTemplateSeccionBodyStep('Valor apróximado del inmueble de la hipoteca a mejorar'
+        , ''
+        , tagOpciones
+        , 0
+    );
+
+    stepBody.innerHTML = tagStep;
+}
+
+function getTemplateStep_4() {
+
+    var stepBody = document.getElementById('stepBody_4');
+    var tagOpciones = `
+                        <div class="col-xs-12 col-sm-12 col-md-6 mb-2 text-center">                                                      
+                                <div id="BtnGpo_PagoPuntualHipoteca" class="btn-group btn-group-switch" role="group" aria-label="First group">
+                                    <button id="BtnPagoPuntualHipoteca_SI" value="SI"type="button" class="btn w-50 bg-segundo-plano"><i class="fa fa-check"></i>&nbsp;Si</button>
+                                    <button id="BtnPagoPuntualHipoteca_NO" value="NO" type="button" class="btn w-50 bg-segundo-plano"><i class="fa fa-times"></i>&nbsp;No</button>
+                                </div>
+                        </div>    
+                    `;
+
+    var tagStep = getTemplateSeccionBodyStep('¿Has pagado puntualmente el último año de tu hipoteca?'
+        , ''
+        , tagOpciones
+        , 8
+    );
+
+    stepBody.innerHTML = tagStep;
+}
+
+
+
+//Compártenos tus datos 
+function getTemplateStep_5() {
+
+    var stepBody = document.getElementById('stepBody_5');
     
     var tagOpciones = `<div class="col-xs-12 col-sm-12 col-md-12">
                             ${getTemplateTextBox('txtNombres', '', 'Nombre(s)', 'required')}
@@ -670,21 +715,29 @@ function getTemplateStep_3() {
         , 7
     );
 
-    stepBody_4.innerHTML = tagStep;
+    stepBody.innerHTML = tagStep;
 }
 
-function getTemplateStep_4() {
+function getTemplateStep_6() {
 
-    var stepBody_4 = document.getElementById('stepBody_4');
-    var tagOpciones = getTemplateBtnChk('btnChkHistorialCreditoBueno', '', '¿Tu historial de buró de crédito es bueno? ', 'required');
+    var stepBody = document.getElementById('stepBody_6');
+    //var tagOpciones = getTemplateBtnChk('BtnHistorialCreditoBueno', '', '¿Tu historial de buró de crédito es bueno? ', 'required');
+    var tagOpciones = `
+                        <div class="col-xs-12 col-sm-12 col-md-12 mb-2 text-center">                                                      
+                                <div id="BtnGpo_HistorialCreditoBueno" class="btn-group btn-group-switch" role="group" aria-label="First group">
+                                    <button id="BtnHistorialCreditoBueno_SI" value="SI"type="button" class="btn w-50 bg-segundo-plano"><i class="fa fa-check"></i>&nbsp;Si</button>
+                                    <button id="BtnHistorialCreditoBueno_NO" value="NO" type="button" class="btn w-50 bg-segundo-plano"><i class="fa fa-times"></i>&nbsp;No</button>
+                                </div>
+                        </div>    
+                    `;
 
     var tagStep = getTemplateSeccionBodyStep('Recuerda que al momento de estar tramitando un crédito con UN BANCO es prioritario tener BUEN HISTORIAL DE BURO DE CREDITO '
-        , ''
+        , '¿Tu historial de buró de crédito es bueno?'
         , tagOpciones
         , 8
     );
 
-    stepBody_4.innerHTML = tagStep;
+    stepBody.innerHTML = tagStep;
 }
 
 function getTemplateStep_5_Yano() {
@@ -746,9 +799,9 @@ function getTemplateStep_7_Yano() {
     stepBody_7.innerHTML = tagStep;
 }
 
-function getTemplateStep_5() {
+function getTemplateStep_7() {
 
-    var stepBody_8 = document.getElementById('stepBody_5');
+    var stepBody = document.getElementById('stepBody_7');
 
     var tagOpciones = `<div class="row">
                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -759,7 +812,7 @@ function getTemplateStep_5() {
                           </div>
                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                               <p>
-                                Al dar clic en Siguiente, acepto recibir notificaciones por Whatsapp y correo electrónico y que mis datos personales sean tratados para las finalidades descritas en el <strong>Aviso de Privacidad</strong>, y acepto los <strong>Términos y Condiciones de Uso</strong>.
+                                Al dar clic en Siguiente, acepto recibir notificaciones por SMS y correo electrónico y que mis datos personales sean tratados para las finalidades descritas en el <strong>Aviso de Privacidad</strong>, y acepto los <strong>Términos y Condiciones de Uso</strong>.
                               </p>
                           </div>
 
@@ -771,12 +824,12 @@ function getTemplateStep_5() {
         , 11
     );
 
-    stepBody_8.innerHTML = tagStep;
+    stepBody.innerHTML = tagStep;
 }
 
-function getTemplateStep_6() {
+function getTemplateStep_8() {
 
-    var stepBody = document.getElementById('stepBody_6');
+    var stepBody = document.getElementById('stepBody_8');
 
     var tagOpciones = '';
     tagOpciones += `<div id="step_6_Wait" style="width: 100%; text-align: center;">
@@ -786,7 +839,7 @@ function getTemplateStep_6() {
 
     tagOpciones += `<div id="step_6_row" class="row" hidden>
                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                              ${getTemplateBtnChk('btnChkAutorizo', false, 'Autorizo a MAAY Capital a consultar mi historial crediticio de cualquier SIC que estime conveniente.')}
+                              ${getTemplateBtnChk('btnChkAutorizo', false, 'Autorizo a MAAY CAPITAL a consultar mi historial crediticio de cualquier SIC que estime conveniente.')}
                           </div>
                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                               ${getTemplateTextBoxNum('txtCodigoValidacion', '', 'Ingresa tu código', 'required')}
@@ -801,7 +854,6 @@ function getTemplateStep_6() {
 
     stepBody.innerHTML = tagStep;
 }
-function getTemplateStep_7(){}
 
 /*Aqui termina */
 function getTemplateStep_Felicidades(){
@@ -817,7 +869,7 @@ function getTemplateStep_Felicidades(){
    stepBody.innerHTML = tagStep;
     
 }
-function getTemplateStep_8(){}
+
 function getTemplateStep_9(){}
 function getTemplateStep_10(){}
 
@@ -981,6 +1033,7 @@ function btnSelQuebuscasClick() {
         var idspan = `span${btn.id}`;
         var spanText = document.getElementById(idspan).innerHTML;
         OBJCaptura.tipoCredito = spanText;
+        OBJCaptura.tipoCreditoID = btn.id;
         fg_switch_buttons_listado('stepBody_1', btn);
 
         var stepBody_2 = document.getElementById('stepBody_2');
@@ -1007,6 +1060,21 @@ function btnSelValorAproxClick() {
         var spanText = document.getElementById(idspan).innerHTML;
         OBJCaptura.valorAproximado = spanText;
         fg_switch_buttons_listado('stepBody_2', btn);
+
+
+        //Se actualiza las leyendas del step 3 en base a flujo que selecciono al inicio
+        var step_3_titulos = {
+            btnSelAdquirir: 'Monto apróximado del crédito que necesitas.' 
+          , btnSelMejorar: 'Valor apróximado del inmueble de la hipoteca a mejorar'
+          , btnSelObtener: 'Valor apróximado del inmueble que desas dejar en garantia.'  
+         }
+        var stepBody_3 = document.getElementById('stepBody_3');
+        var steptitle = stepBody_3.getElementsByClassName('step-title')[0];
+        var stepsubtitle = stepBody_3.getElementsByClassName('step-subtitle')[0];
+
+        steptitle.innerHTML = step_3_titulos[OBJCaptura.tipoCreditoID];
+        //stepsubtitle.innerHTML = step_2_subtitulos[btn.id];
+
         PAGECONTROLS.controls.btnNext.click();
     }
     catch (e) {
@@ -1015,40 +1083,29 @@ function btnSelValorAproxClick() {
 }
 
 /*================== STEP 3 ============================ */
-function txtMontchange() {
-    console.log(PAGECONTROLS.controls.txtMonto.value);
-    PAGECONTROLS.controls.txtMonto.value = formatter.format(PAGECONTROLS.controls.txtMonto.value);
-    console.log(PAGECONTROLS.controls.txtMonto.value);
-}
-
-function btnChkHistorialCreditoBuenoClick() {
-    try {
-
-        var btn = this;
-        fg_ChekClik(btn);
-    }
-    catch (e) {
-        fg_mensaje_problema_tecnico(e);
-    }
-}
-
-/*================== STEP 5 ============================ */
-function btnSelGeneroClick() {
+function btnSelValorAproxMejorarClick() {
 
     try {
 
         var btn = this;
         var idspan = `span${btn.id}`;
         var spanText = document.getElementById(idspan).innerHTML;
-        OBJCaptura.Genero = spanText;
-
-        fg_switch_buttons_listado('stepBody_5', btn);
-
+        OBJCaptura.valorAproximadoMejorar = spanText;
+        fg_switch_buttons_listado('stepBody_3', btn);
+        PAGECONTROLS.controls.btnNext.click();
     }
     catch (e) {
         fg_mensaje_problema_tecnico(e);
     }
 }
+
+/*================== STEP 4 ============================ */
+function txtMontchange() {
+    console.log(PAGECONTROLS.controls.txtMonto.value);
+    PAGECONTROLS.controls.txtMonto.value = formatter.format(PAGECONTROLS.controls.txtMonto.value);
+    console.log(PAGECONTROLS.controls.txtMonto.value);
+}
+
 
 /*================== STEP 10 ============================ */
 function btnChkAutorizoClick() {
@@ -1061,57 +1118,6 @@ function btnChkAutorizoClick() {
         fg_mensaje_problema_tecnico(e);
     }
 }
-
-
-
-async function searchColonias() {
-    // const filtros = {
-    //     Email:'mirra.espinoza@gmail.com',
-    //     Password:'test'
-    //     };
-    var codigoPostal = PAGECONTROLS.controls.txtCP.value;
-    const urlAPI = `${_API_}getColoniasPorCP?codigoPostal=${codigoPostal}`;
-    const response = await fetch(
-        urlAPI
-        , {
-            method: 'GET', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            //credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Accept': 'application/json, text/plain',
-                'Content-Type': 'application/json;charset=UTF-8'
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            //body: JSON.stringify(filtros)
-        }
-    );
-
-    const data = await response.json();
-
-    return data;
-}
-
-async function txtCPOnChange() {
-    try {
-        const ds = await searchColonias();
-        DtColonias = ds.colonias;
-
-        if (DtColonias.length > 0) {
-            var estado = DtColonias[0].Estado;
-            var municipio = DtColonias[0].Municipio;
-
-            PAGECONTROLS.controls.lblEstadoMunicipio.innerHTML = `${municipio}, ${estado}`;
-            fg_cargar_combo_from_List(PAGECONTROLS.controls.cmbColonia, 'Codigo_Postal_ID', 'Colonia', DtColonias, false);
-        }
-    }
-    catch (e) {
-
-        fg_mensaje_problema_tecnico(e);
-    }
-};
 
 async function setProspecto() {
     // const filtros = {
@@ -1179,7 +1185,9 @@ function obtenerValores(){
 
     OBJCaptura.idEstadoCivil = PAGECONTROLS.controls.cmbEstadoCivil.value;
     OBJCaptura.idActividad = PAGECONTROLS.controls.cmbActividad.value;
-    OBJCaptura.tieneBuenHistorial = fg_isChecked_BtnChk(PAGECONTROLS.controls.btnChkHistorialCreditoBueno);
+    OBJCaptura.tieneBuenHistorial =  fg_getResultSwitch('BtnGpo_HistorialCreditoBueno');       //fg_isChecked_BtnChk(PAGECONTROLS.controls.BtnHistorialCreditoBueno);
+
+
     OBJCaptura.autorizoContactoAsesor = fg_isChecked_BtnChk(PAGECONTROLS.controls.btnChkAutorizo);    
 }
 
@@ -1405,6 +1413,24 @@ async function irsetProspectoAutenticado() {
 
 }
 
+function Btn_Switch_Click() {
+
+    var btn = this;
+    var agrupador = btn.parentElement;
+
+    var tool = new Object();
+    tool.controls = fg_obtener_controles_agrupador(agrupador.id);
+
+    //Primero reseteamos la clase a todos los buttons del grupo; se esperan todos apliquen el mismo criterio de cambio de listado
+    $.each(tool.controls, function (key, value) {
+        if (value.tagName == 'BUTTON') {
+            value.classList = 'btn bg-segundo-plano';
+        }
+    })
+
+    btn.classList = 'btn bg-primer-plano';
+
+}
 
 
 $(document).ready(function () {
@@ -1417,9 +1443,10 @@ $(document).ready(function () {
     getTemplateStep_6();
     getTemplateStep_7();
     getTemplateStep_8();
-    getTemplateStep_9();
-    getTemplateStep_10();
-    getTemplateStep_11();
+
+    // getTemplateStep_9();
+    // getTemplateStep_10();
+    // getTemplateStep_11();
 
     getTemplateStep_Termina_HistorialMalo();
     getTemplateStep_Felicidades();
@@ -1457,7 +1484,13 @@ $(document).ready(function () {
     PAGECONTROLS.controls.btnValorAproximado_3.addEventListener('click', btnSelValorAproxClick);
     PAGECONTROLS.controls.btnValorAproximado_4.addEventListener('click', btnSelValorAproxClick);
     PAGECONTROLS.controls.btnValorAproximado_5.addEventListener('click', btnSelValorAproxClick);
-    
+
+    PAGECONTROLS.controls.btnValorAproximadoMejorar_1.addEventListener('click', btnSelValorAproxMejorarClick);
+    PAGECONTROLS.controls.btnValorAproximadoMejorar_2.addEventListener('click', btnSelValorAproxMejorarClick);
+    PAGECONTROLS.controls.btnValorAproximadoMejorar_3.addEventListener('click', btnSelValorAproxMejorarClick);
+    PAGECONTROLS.controls.btnValorAproximadoMejorar_4.addEventListener('click', btnSelValorAproxMejorarClick);
+    PAGECONTROLS.controls.btnValorAproximadoMejorar_5.addEventListener('click', btnSelValorAproxMejorarClick);
+
     
 
 
@@ -1475,7 +1508,15 @@ $(document).ready(function () {
 
     PAGECONTROLS.controls.btnChkAutorizo.addEventListener('click', btnChkAutorizoClick);
 
-    PAGECONTROLS.controls.btnChkHistorialCreditoBueno.addEventListener('click', btnChkHistorialCreditoBuenoClick);
+    //PAGECONTROLS.controls.BtnHistorialCreditoBueno.addEventListener('click', BtnHistorialCreditoBuenoClick);
+    PAGECONTROLS.controls.BtnHistorialCreditoBueno_SI.addEventListener('click', Btn_Switch_Click);
+    PAGECONTROLS.controls.BtnHistorialCreditoBueno_NO.addEventListener('click', Btn_Switch_Click);
+
+    
+    PAGECONTROLS.controls.BtnPagoPuntualHipoteca_SI.addEventListener('click', Btn_Switch_Click);
+    PAGECONTROLS.controls.BtnPagoPuntualHipoteca_NO.addEventListener('click', Btn_Switch_Click);
+
+    PAGECONTROLS.controls.btnValorAproximado_5.addEventListener('click', btnSelValorAproxClick);
     
     
     /**

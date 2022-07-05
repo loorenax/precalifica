@@ -412,6 +412,37 @@ function fg_isChecked_BtnChk(_BtnChk) {
     return ischeked;
 }
 
+function fg_getResultSwitch(_Agrupador_ID) {
+
+    var resultado = '';
+
+    try {
+
+        var gpo = new Object();
+        gpo = fg_obtener_controles_agrupador(_Agrupador_ID);
+
+        $.each(gpo, function(key, value){
+
+            var elemento = value;
+            if(elemento.tagName == 'BUTTON' ){
+                if(elemento.className.indexOf('bg-primer-plano') != -1){
+                    console.log('elemento.value')
+                    console.log(elemento.value);
+                    resultado = elemento.value;
+
+                }
+            }
+        })       
+
+    }
+    catch (e) {
+        fg_mensaje_problema_tecnico(e);
+    }
+
+    return resultado;
+}
+
+
 function fg_resultOK(_result) {
 
     var resultadoOK = false;

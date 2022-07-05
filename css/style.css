@@ -140,6 +140,8 @@ p {
 
 .span-error {
     color: red;
+    display: inline-block;
+    width: 100%;
 }
 
 /*------------------------------------------------------------------
@@ -370,6 +372,9 @@ p {
     color: var(--theme-input-bg);
 }
 
+.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
+    outline: 0px;
+}
 .date-old {
     display: flex;
 }
@@ -390,12 +395,15 @@ p {
 
 .bg-segundo-plano {
     background-color: var(--theme-button-background);
-    color: var(--theme-brand-color);
+    color: var(--theme-input-border-color);
 }
 
 .bg-primer-plano {
-    background-color: var(--theme-primary-dark-color);
-    color: var(--theme-input-bg);
+    background-color: var(--theme-secondary-color);
+    color: #fff;
+}
+.bg-primer-plano:focus{
+    color: #fff;
 }
 
 .btnchk {
@@ -415,6 +423,10 @@ p {
     outline: none !important;
 }
 
+.btn-group-switch button{
+    /* margin: 0px; */
+    width: 100px;
+}
 /*------------------------------------------------------------------
 [4. Loader / .luna-loader-container]
 */
@@ -694,6 +706,7 @@ p {
     border-bottom: 1px solid #EEE;
     padding-bottom: 15px;
     margin-bottom: 15px;
+    text-align: justify;
 }
 
 /*------------------------------------------------------------------
@@ -866,7 +879,7 @@ p {
 
 .step-body button:active,
 .step-body button:focus {
-    background-color: var(--theme-primary-dark-color);
+    background-color: var(--theme-secondary-color);
     outline: none;
     color: var(--theme-input-bg--hover);
 }
