@@ -367,11 +367,16 @@ function fg_switch_buttons_listado(_strBtnGpo, _btnClick) {
     //Primero reseteamos la clase a todos los buttons del grupo; se esperan todos apliquen el mismo criterio de cambio de listado
     $.each(tool.controls, function (key, value) {
         if (value.tagName == 'BUTTON') {
-            value.classList = 'btn bg-segundo-plano btn-block';
+            value.classList.remove('bg-primer-plano');
+            if(value.className.indexOf('bg-segundo-plano') == -1){
+                value.classList.add('bg-segundo-plano');
+            }
+            // value.classList = 'btn bg-segundo-plano btn-block';
         }
     })
 
-    _btnClick.classList = 'btn bg-primer-plano  btn-block';
+    //_btnClick.classList = 'btn bg-primer-plano  btn-block';
+    _btnClick.classList.add('bg-primer-plano');
 }
 
 function fg_validarEmail(valor) {

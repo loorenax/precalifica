@@ -86,7 +86,7 @@ var lunaWizard = {
 
         //lunaLeftOverlay.width(($(window).width()-$(".container").width())/2+10);        
         lunaLeftOverlay.width(windowWidth * .10);
-        container.width(windowWidth * .80);
+        container.width(windowWidth * .90);
 
     },
     /**
@@ -464,14 +464,14 @@ var lunaWizard = {
 function getTemplateSeccionBodyStep(_questionTitle, _descripcion, _body, _itemImage) {
     var tag = `
     <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-6">
+    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-7">
         <div class="step-title">${_questionTitle}</div>
         <div class="step-subtitle">${_descripcion}</div>
         <div class="step-body">
             ${_body}
         </div>
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-6">
+    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-5">
         <img class='step-image' src='${OBJImageStpes[_itemImage]}' alt="banks store" />
     </div>
     </div>
@@ -483,9 +483,23 @@ function getTemplateSeccionBodyStep(_questionTitle, _descripcion, _body, _itemIm
 function getTemplateBtnTitleSubTitle(_idBtn, _title, _subtitle) {
 
     var tag = `
-               <button id="${_idBtn}" type="button" class="btn bg-segundo-plano btn-block">
+               <button id="${_idBtn}" type="button" class="btn btn-list bg-segundo-plano btn-block">
+                  <span id="span${_idBtn}">${_title}</span>
+                  <small id="small${_idBtn}">${_subtitle}</small>               
+               </button>    
+             `;
+
+
+    return tag;
+}
+
+function getTemplateBtnTitleSubTitle_Principal(_idBtn, _title, _subtitle, _tag_img) {
+
+    var tag = `
+               <button id="${_idBtn}" type="button" class="btn btn-principal bg-segundo-plano ">
                   <span id="span${_idBtn}">${_title}</span>
                   <small id="small${_idBtn}">${_subtitle}</small>
+                  ${_tag_img}
                </button>    
              `;
 
@@ -582,9 +596,16 @@ function getTemplateBtnChk(_idBtnChk, _isChecked, _Etiqueta, _Propiedad_Adiciona
 function getTemplateStep_1() {
 
     var stepBody_1 = document.getElementById('stepBody_1');
-    var tagOpciones = getTemplateBtnTitleSubTitle('btnSelAdquirir', 'ADQUISICION', 'Quiero comprar una casa');
-    tagOpciones += getTemplateBtnTitleSubTitle('btnSelMejorar', 'MEJORA DE HIPOTECA', 'Quiero refinanciar mi crédito actual');
-    tagOpciones += getTemplateBtnTitleSubTitle('btnSelObtener', 'LIQUIDEZ', 'Quiero liquidez utilizando mi propiedad como garantía');
+    var tagOpciones = getTemplateBtnTitleSubTitle_Principal('btnSelAdquirir', 'ADQUISICION'
+                    , `Quiero comprar una casa.`
+                    , `<div class="contenedor-img"><img src="images/img_casa.png" alt=""></div>`
+                    );
+    tagOpciones += getTemplateBtnTitleSubTitle_Principal('btnSelMejorar', 'MEJORA DE HIPOTECA'
+                    , `Quiero refinanciar mi crédito actual.`
+                    , `<div class="contenedor-img"><img src="images/img_hipoteca.png" alt=""></div>`);
+    tagOpciones += getTemplateBtnTitleSubTitle_Principal('btnSelObtener', 'LIQUIDEZ'
+                    , `Quiero liquidez utilizando mi propiedad como garantía.`
+                    , `<div class="contenedor-img"><img src="images/img_liquidez.png" alt=""></div>`);
 
 
     var tagStep = getTemplateSeccionBodyStep('¿Que estas buscando?'
@@ -605,11 +626,27 @@ function getTemplateStep_2() {
     // tagOpciones += getTemplateBtnTitleSubTitle('btnSelEntre3y4', 'Entre $3 millones y $4 millones', '');
     // tagOpciones += getTemplateBtnTitleSubTitle('btnSelMasde4Mil', 'Más de $4 millones', '');
 
-    var tagOpciones = getTemplateBtnTitleSubTitle('btnValorAproximado_1', 'Menos de 500 mil ', '');
-        tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximado_2', 'De $500 mil  a $1 millón', '');
-        tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximado_3', 'Entre $1millón y  $2 millones', '');
-        tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximado_4', 'Entre $2millones y  $2 millones', '');
-        tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximado_5', 'De $4 millones o más…', '');
+    var tagOpciones = `<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        ${getTemplateBtnTitleSubTitle('btnValorAproximado_1', 'Menos de 500 mil ', '')}
+                        </div>` ;
+        tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            ${getTemplateBtnTitleSubTitle('btnValorAproximado_2', 'De $500 mil  a $1 millón', '')}
+                        </div>
+                       `;
+        tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            ${getTemplateBtnTitleSubTitle('btnValorAproximado_3', 'Entre $1millón y  $2 millones', '')}
+                        </div>
+                        `;
+        tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            ${getTemplateBtnTitleSubTitle('btnValorAproximado_4', 'Entre $2millones y  $3 millones', '')}
+                        </div>
+                        `;
+        tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            ${getTemplateBtnTitleSubTitle('btnValorAproximado_5', 'De $4 millones o más…', '')}
+        </div>
+        `;
+
+        tagOpciones = `<div class="row">${tagOpciones}</div>`;
     
     var tagStep = getTemplateSeccionBodyStep(''
         , ''
@@ -644,12 +681,32 @@ function getTemplateStep_3() {
     // tagOpciones += getTemplateBtnTitleSubTitle('btnSelEntre3y4', 'Entre $3 millones y $4 millones', '');
     // tagOpciones += getTemplateBtnTitleSubTitle('btnSelMasde4Mil', 'Más de $4 millones', '');
 
-    var tagOpciones =  getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_1', 'Menos de 500 mil ', '');
-        tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_2', 'De $500 mil  a $1 millón', '');
-        tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_3', 'Entre $1millón y  $2 millones', '');
-        tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_4', 'Entre $2millones y  $2 millones', '');
-        tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_5', 'De $4 millones o más…', '');
+    // var tagOpciones =  getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_1', 'Menos de 500 mil ', '');
+    //     tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_2', 'De $500 mil  a $1 millón', '');
+    //     tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_3', 'Entre $1millón y  $2 millones', '');
+    //     tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_4', 'Entre $2millones y  $2 millones', '');
+    //     tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_5', 'De $4 millones o más…', '');
     
+        var tagOpciones = `<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        ${getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_1', 'Menos de 500 mil ', '')}
+                        </div>` ;
+
+        tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            ${getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_2', 'De $500 mil  a $1 millón', '')}
+                        </div>` ;
+        tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            ${getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_3', 'Entre $1millón y  $2 millones', '')}
+                        </div>` ;
+        tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            ${getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_4', 'Entre $2millones y  $3 millones', '')}
+                        </div>` ;
+        tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            ${getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_5', 'De $4 millones o más…', '')}
+                        </div>` ;                    
+
+        tagOpciones = `<div class="row">${tagOpciones}</div>`;
+
+
     var tagStep = getTemplateSeccionBodyStep('Valor apróximado del inmueble de la hipoteca a mejorar'
         , ''
         , tagOpciones
@@ -663,7 +720,7 @@ function getTemplateStep_4() {
 
     var stepBody = document.getElementById('stepBody_4');
     var tagOpciones = `
-                        <div class="col-xs-12 col-sm-12 col-md-6 mb-2 text-center">                                                      
+                        <div class="col-xs-12 col-sm-12 col-md-12 mb-2 text-center">                                                      
                                 <div id="BtnGpo_PagoPuntualHipoteca" class="btn-group btn-group-switch" role="group" aria-label="First group">
                                     <button id="BtnPagoPuntualHipoteca_SI" value="SI"type="button" class="btn w-50 bg-segundo-plano"><i class="fa fa-check"></i>&nbsp;Si</button>
                                     <button id="BtnPagoPuntualHipoteca_NO" value="NO" type="button" class="btn w-50 bg-segundo-plano"><i class="fa fa-times"></i>&nbsp;No</button>
