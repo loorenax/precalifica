@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/font.css" />
     <link rel="stylesheet" href="css/plugins.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/style.css?Date.now()" />
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -34,13 +34,14 @@
     <div class="luna-loader-container" >
         <div class="luna-loader"></div>
     </div>
+    <div class="container-falso" hidden></div>
 
     <div id="lunaSignUpContainer" class='luna-signup-container'>
-        <div class="luna-signup-left-overlay"></div>
-        <div class='container'>
+        <!-- <div class="luna-signup-left-overlay"></div> -->
+        <div class="container">
             <div class="row">
                 <div class='luna-signup-left'>
-                    <img class='luna-signup-logo img-responsive' src='images/logo.png' alt="logo" />
+                    <img class='luna-signup-logo img-responsive' src='images/Logotipo-01.png' alt="logo" />
                     <div class="luna-navigation" hidden>
                         <a class="toPrev prevStep"><i class="icon icon-arrow-up2"></i></a>
                         <ul class="dots"></ul>
@@ -67,39 +68,46 @@
                             <div id="stepBody_1" class="step step-active" data-step-id='1'>
                             </div>
 
-                            <div  id="stepBody_2" class="step" data-step-id='2'>
+                            <div  id="stepBody_2" class="step step-hide" data-step-id='2'>
                             </div>
 
-                            <div  id="stepBody_3" class="step" data-step-id='3'>
+                            <div  id="stepBody_3" class="step step-hide" data-step-id='3'>
                             </div>
 
-                            <div  id="stepBody_4" class="step" data-step-id='4'>
+                            <div  id="stepBody_4" class="step step-hide" data-step-id='4'>
                             </div>
 
-                            <div  id="stepBody_5" class="step" data-step-id='5'>
+                            <div  id="stepBody_5" class="step step-hide" data-step-id='5'>
                             </div>
 
-                            <div  id="stepBody_6" class="step" data-step-id='6'>
+                            <div  id="stepBody_6" class="step step-hide" data-step-id='6'>
                             </div>
 
-                            <div  id="stepBody_7" class="step" data-step-id='7'>
+                            <div  id="stepBody_7" class="step step-hide" data-step-id='7'>
                             </div>
 
-                            <div  id="stepBody_8" class="step" data-step-id='8'>
+                            <div  id="stepBody_8" class="step step-hide" data-step-id='8'>
                             </div>
 
-                            <div  id="stepBody_9" class="step" data-step-id='9'>
+                            <div  id="stepBody_9" class="step step-hide" data-step-id='9'>
                             </div>
 
-                            <div  id="stepBody_10" class="step" data-step-id='10'>
+                            <div  id="stepBody_10" class="step step-hide" data-step-id='10'>
                             </div>
-                            <div  id="stepBody_11" class="step" data-step-id='11'>
-                            </div>
-
-                            <div  id="stepBody_Termina_HistorialMalo" class="step" data-step-id='90'>
+                            <div  id="stepBody_11" class="step step-hide" data-step-id='11'>
                             </div>
 
-                            <div  id="stepBody_Felicidades" class="step" data-step-id='95'>
+                            <div  id="stepBody_Aquien_Debes" class="step step-hide" data-step-id='20'>
+                            </div>
+
+
+                            <div  id="stepBody_Termina_HistorialMalo" class="step step-hide" data-step-id='90'>
+                            </div>
+                            <div  id="stepBody_Termina_HistorialMalo_M" class="step step-hide" data-step-id='92'>
+                            </div>
+
+
+                            <div  id="stepBody_Felicidades" class="step step-hide" data-step-id='95'>
                             </div>
 
                         </div>
@@ -107,11 +115,11 @@
                         <div id="stepFooter" class="luna-steps-footer">
                             <div class="row" >
 
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-right">
+                                <div class="col-12 text-right">
                                     <div id="lunaStepsFooterError" class="alert danger" role="alert">&nbsp;</div>
                                 </div>
 
-                                <div class="col-xs-12 col-sm-12 col-md-5 col-lg-6 text-right">
+                                <div class="col-12 text-right">
                                     <button id="btnBack" type="button" href="javascript:void(0)" class="btn step-btn-back prevStep"
                                         style="margin-right: 3rem;">
                                         <i class="icon icon-arrow-left2"></i> Regresar
@@ -147,13 +155,17 @@
     <div class="steps-footer">
         <div class="steps-footer-banner">
             <div class="row">
-                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-9">
-                    <img class='luna-signup-logo img-responsive' src='images/logo maay capital final oscuro-01.png' style="height: 90px; width: auto; display: inline-block; margin:0px;" alt="logo" />
-                    <div class="steps-footer-derecho">2021 © MAAY CAPITAL, todos los derechos reservados.</div>
+                <div class="col-xs-12 col-sm-6 col-md-5 col-lg-9">
+                    <div class="steps-footer-aviso-derechos">
+                        <img class='img-responsive' src='images/Logotipo-02.png' alt="logo" />
+                        <div id="footerDerechos" class="steps-footer-derecho">2021 © MAAY CAPITAL, todos los derechos reservados.</div>    
+                    </div>                    
                 </div>
-                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3 text-center" style="margin-top: 26px;">
-                    <div class="steps-footer-aviso">Aviso de privacidad</div>
-                    <div class="steps-footer-terminos">Términos y condiciones de uso</div>
+                <div class="col-xs-12 col-sm-6 col-md-7 col-lg-3 text-center h-100">
+                    <div class="steps-footer-aviso-group">
+                        <div class="steps-footer-aviso"><a href="Aviso de Privacidad MAAY CAPITAL 2022.docx.pdf" target="_blank">Aviso de privacidad</a></div>
+                        <div class="steps-footer-terminos">Términos y condiciones de uso</div>    
+                    </div>
                 </div>
             </div>
         </div>
@@ -170,8 +182,8 @@
     <script type="text/javascript" src="js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="js/bootstrap-datepicker.min.js"></script>
     <script type="text/javascript" src="js/bootbox.min.js"></script>
-    <script type="text/javascript" src="js/util.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/util.js?Date.now()"></script>
+    <script type="text/javascript" src="js/main.js?Date.now()"></script>
     <!-- endbuild -->
 </body>
 

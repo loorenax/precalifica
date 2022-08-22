@@ -1,18 +1,20 @@
 var PAGECONTROLS;
 var OBJCaptura;
 var OBJImageStpes = [
-    'images/img_01_QueEstasBuscando.PNG' //0
+    'images/13-01.png' //0
     , 'images/banks.png'             //1
     , 'images/analysis.png'          //2
     , 'images/secure.png'            //3
     , 'images/bureau.png'            //4
     , 'images/resultado_1.jpg'       //5
-    , 'images/resultado_2.jpg'       //6
-    , 'images/step_03_compartenos_tus_datos.jpg'   //7
-    , 'images/step_04_historial_credito.jpg'       //8
-    , 'images/step_07_Asesores.JPG'                //9        
-    , 'images/step_06_AutorizoAsesores.JPG'                //10            
-    , 'images/step_05_comparte_tus_datosJPG.jpg'                //11
+    , 'images/22-01.png'       //6
+    , 'images/17-01.png'   //7
+    , 'images/18-01.png'       //8
+    , 'images/21-01.png'                //9        
+    , 'images/20-01.png'                //10            
+    , 'images/19-01.png'                //11
+    , 'images/10-01.png'                //12
+    , 'images/6-01.png'                //13
 ];
 
 var DtMeses = [
@@ -42,6 +44,13 @@ var step_2_subtitulos = {
   , btnSelMejorar: 'Este dato nos ayuda a conocer el máximo de crédito que los Bancos te pueden otorgar.' 
   , btnSelObtener: `<span class="text-info">(Te recordamos que únicamente se aceptan casa habitación  y departamentos)</span><br>Este dato nos ayuda a conocer el máximo de crédito que los Bancos te pueden otorgar.` 
  }
+
+ var step_Aquien_Debes = {
+    btnAquienDebes_INFONAVIT: 'INFONAVIT'
+  , btnAquienDebes_BANCO: 'BANCO' 
+  , btnAquienDebes_BANCOINFONAVIT: `BANCOINFONAVIT` 
+ }
+
  
  var DtEstadosCivil = [
     {id:'1', descripcion:'Soltero'}
@@ -75,7 +84,8 @@ var lunaWizard = {
         var lunaContainer = $(".luna-signup-container");
         var lunaLeft = $(".luna-signup-left");
         var lunaLeftOverlay = $(".luna-signup-left-overlay");
-        var container = $(".container");
+        // var container = $(".container");
+        var container = $(".container-falso");
 
         if (windowWidth >= 768) {
             lunaContainer.add(lunaLeft).add(lunaLeftOverlay).innerHeight(windowHeight - (stepsfooterbanner + 18));
@@ -102,9 +112,9 @@ var lunaWizard = {
 
         $('html,body').animate({ scrollTop: 0 }, 'slow');
 
-        if (nextStep <= 0 || nextStep > this.stepCount) {
-            return false;
-        }
+        // if (nextStep <= 0 || nextStep > this.stepCount) {
+        //     return false;
+        // }
 
         // var form = $("form[name='signupForm']");
         // form.validate({
@@ -162,10 +172,23 @@ var lunaWizard = {
 
                         break;                    
                         case '4':
-                            if (OBJCaptura.valorAproximadoMejorar == null) {
-                                PAGECONTROLS.controls.lunaStepsFooterError.innerHTML = `Por favor debe seleccionar una opción para avanzar.`;
-                                permitirAvanzar = false;
+
+                            var respuesta = fg_getResultSwitch('BtnGpo_PagoPuntualHipoteca');
+                            if (!fg_isEmptyOrNull(respuesta)) {
+    
+                                //Si es no entonces ya lo enviamos a que termine
+                                nextStep = 20;  //Aquien le debes
+                                if(respuesta == 'NO'){
+                                    nextStep = 92;
+                                    var stepscount = document.getElementsByClassName('steps-count')[0].hidden = true;    
+                                }
                             }
+                            else{
+                                permitirAvanzar = false;
+                                var BtnGpo_PagoPuntualHipoteca = document.getElementById('BtnGpo_PagoPuntualHipoteca');
+                                fg_mostrar_error(BtnGpo_PagoPuntualHipoteca, 'Debe seleccionar una opción.')                            
+                            }    
+    
                             break;                    
     
                         case '5':
@@ -205,16 +228,21 @@ var lunaWizard = {
                     if (!fg_valida_captura_seccion('stepBody_8')) {
                         permitirAvanzar = false;
                     }
-                    // else {
-                    //     if (!fg_isChecked_BtnChk(PAGECONTROLS.controls.btnChkAutorizo)) {
-                    //         fg_mostrar_error(PAGECONTROLS.controls.btnChkAutorizo, 'Debe autorizar para continuar.');
-                    //         permitirAvanzar = false;
-                    //     }
-                    // }
 
                     nextStep = 95;
                     var stepscount = document.getElementsByClassName('steps-count')[0].hidden = true;
                     break;
+                //Aquien le debes
+                case '20':
+                    //Aqui me quede deben ser botones
+                    if (!fg_valida_captura_seccion('stepBody_Aquien_Debes')) {
+                        permitirAvanzar = false;
+                    }
+
+                    nextStep = 5;
+                    //var stepscount = document.getElementsByClassName('steps-count')[0].hidden = true;
+                    break;
+    
             }
 
             if (!permitirAvanzar) {
@@ -280,14 +308,18 @@ var lunaWizard = {
             prevStepEl.css("display", "inline-block");
         }
 
-        if (PAGECONTROLS.controls.stepBody_6.className.indexOf('step-active') != -1) {
+        if (PAGECONTROLS.controls.stepBody_8.className.indexOf('step-active') != -1) {
             registrarProspecto();
         }
-
+        
+        // if (PAGECONTROLS.controls.stepBody_8.className.indexOf('step-active') != -1) {
+        //     btnReenviarCodigoClick();
+        // }
 
         //Solo para ocultar el footer y ya no mostrar el atras y el siguiente
         if (PAGECONTROLS.controls.stepBody_11.className.indexOf('step-active') != -1
             || PAGECONTROLS.controls.stepBody_Termina_HistorialMalo.className.indexOf('step-active') != -1
+            || PAGECONTROLS.controls.stepBody_Termina_HistorialMalo_M.className.indexOf('step-active') != -1
             || PAGECONTROLS.controls.stepBody_Felicidades.className.indexOf('step-active') != -1
             ) {
 
@@ -298,9 +330,12 @@ var lunaWizard = {
         //     validarCredito();
         // }
 
-        if (PAGECONTROLS.controls.stepBody_Termina_HistorialMalo.className.indexOf('step-active') != -1) {
-            irsetProspectoMalHistorial();
-        }
+        if (
+            PAGECONTROLS.controls.stepBody_Termina_HistorialMalo.className.indexOf('step-active') != -1
+            || PAGECONTROLS.controls.stepBody_Termina_HistorialMalo_M.className.indexOf('step-active') != -1
+           ) {
+                irsetProspectoMalHistorial();
+             }
 
         if (PAGECONTROLS.controls.stepBody_Felicidades.className.indexOf('step-active') != -1) {
 
@@ -463,15 +498,16 @@ var lunaWizard = {
 
 function getTemplateSeccionBodyStep(_questionTitle, _descripcion, _body, _itemImage) {
     var tag = `
+    <div class="step-title">${_questionTitle}</div>
+    <div class="step-subtitle">${_descripcion}</div>
     <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-7">
-        <div class="step-title">${_questionTitle}</div>
-        <div class="step-subtitle">${_descripcion}</div>
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        
         <div class="step-body">
             ${_body}
         </div>
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-5">
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
         <img class='step-image' src='${OBJImageStpes[_itemImage]}' alt="banks store" />
     </div>
     </div>
@@ -496,7 +532,7 @@ function getTemplateBtnTitleSubTitle(_idBtn, _title, _subtitle) {
 function getTemplateBtnTitleSubTitle_Principal(_idBtn, _title, _subtitle, _tag_img) {
 
     var tag = `
-               <button id="${_idBtn}" type="button" class="btn btn-principal bg-segundo-plano ">
+               <button id="${_idBtn}" type="button" class="btn btn-principal w-100 bg-segundo-plano ">
                   <span id="span${_idBtn}">${_title}</span>
                   <small id="small${_idBtn}">${_subtitle}</small>
                   ${_tag_img}
@@ -596,17 +632,25 @@ function getTemplateBtnChk(_idBtnChk, _isChecked, _Etiqueta, _Propiedad_Adiciona
 function getTemplateStep_1() {
 
     var stepBody_1 = document.getElementById('stepBody_1');
-    var tagOpciones = getTemplateBtnTitleSubTitle_Principal('btnSelAdquirir', 'ADQUISICION'
+    var tagbtnSelAdquirir = getTemplateBtnTitleSubTitle_Principal('btnSelAdquirir', 'ADQUISICION'
                     , `Quiero comprar una casa.`
-                    , `<div class="contenedor-img"><img src="images/img_casa.png" alt=""></div>`
+                    , `<div class="contenedor-img"><img src="images/14-01.png" alt=""></div>`
                     );
-    tagOpciones += getTemplateBtnTitleSubTitle_Principal('btnSelMejorar', 'MEJORA DE HIPOTECA'
+    var tagbtnSelMejorar = getTemplateBtnTitleSubTitle_Principal('btnSelMejorar', 'MEJORA DE HIPOTECA'
                     , `Quiero refinanciar mi crédito actual.`
-                    , `<div class="contenedor-img"><img src="images/img_hipoteca.png" alt=""></div>`);
-    tagOpciones += getTemplateBtnTitleSubTitle_Principal('btnSelObtener', 'LIQUIDEZ'
+                    , `<div class="contenedor-img"><img src="images/15-01.png" alt=""></div>`);
+    var tagbtnSelObtener = getTemplateBtnTitleSubTitle_Principal('btnSelObtener', 'LIQUIDEZ'
                     , `Quiero liquidez utilizando mi propiedad como garantía.`
-                    , `<div class="contenedor-img"><img src="images/img_liquidez.png" alt=""></div>`);
+                    , `<div class="contenedor-img"><img src="images/16-01.png" alt=""></div>`);
 
+    var tagOpciones = `
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-4">${tagbtnSelAdquirir}</div>
+                            <div class="col-sm-12 col-md-12 col-lg-4">${tagbtnSelMejorar}</div>
+                            <div class="col-sm-12 col-md-12 col-lg-4">${tagbtnSelObtener}</div>
+
+                        </div>
+                     `;
 
     var tagStep = getTemplateSeccionBodyStep('¿Que estas buscando?'
         , ''
@@ -731,7 +775,7 @@ function getTemplateStep_4() {
     var tagStep = getTemplateSeccionBodyStep('¿Has pagado puntualmente el último año de tu hipoteca?'
         , ''
         , tagOpciones
-        , 8
+        , 12
     );
 
     stepBody.innerHTML = tagStep;
@@ -744,23 +788,23 @@ function getTemplateStep_5() {
 
     var stepBody = document.getElementById('stepBody_5');
     
-    var tagOpciones = `<div class="col-xs-12 col-sm-12 col-md-12">
+    var tagOpciones = `<div class="col-xs-12 col-sm-6 col-md-4">
                             ${getTemplateTextBox('txtNombres', '', 'Nombre(s)', 'required')}
                        </div>`;
 
-    tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6">
+    tagOpciones += `<div class="col-xs-12 col-sm-6 col-md-4">
                        ${getTemplateTextBox('txtPrimerApellido', '', 'Apellido Paterno', 'required')}
                   </div>`;
 
-    tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6">
+    tagOpciones += `<div class="col-xs-12 col-sm-6 col-md-4">
                   ${getTemplateTextBox('txtSegundoApellido', '', 'Apellido Materno', '')}
              </div>`;
 
-    tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6">
+    tagOpciones += `<div class="col-xs-12 col-sm-6 col-md-4">
              ${getTemplateSelect('cmbEstadoCivil', '', 'Estado Civil', '')}
     </div>`;
 
-    tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6">
+    tagOpciones += `<div class="col-xs-12 col-sm-6 col-md-4">
              ${getTemplateSelect('cmbActividad', '', 'Actividad', '')}
     </div>`;
 
@@ -780,6 +824,8 @@ function getTemplateStep_6() {
     var stepBody = document.getElementById('stepBody_6');
     //var tagOpciones = getTemplateBtnChk('BtnHistorialCreditoBueno', '', '¿Tu historial de buró de crédito es bueno? ', 'required');
     var tagOpciones = `
+                        <h2 class="text-center" style="font-weight: bold;">Recuerda que al momento de estar tramitando un crédito con UN BANCO es prioritario tener BUEN HISTORIAL DE BURO DE CREDITO</h2>
+                        <h4 class="text-center">¿Tu historial de buró de crédito es bueno?</h4>
                         <div class="col-xs-12 col-sm-12 col-md-12 mb-2 text-center">                                                      
                                 <div id="BtnGpo_HistorialCreditoBueno" class="btn-group btn-group-switch" role="group" aria-label="First group">
                                     <button id="BtnHistorialCreditoBueno_SI" value="SI"type="button" class="btn w-50 bg-segundo-plano"><i class="fa fa-check"></i>&nbsp;Si</button>
@@ -788,8 +834,8 @@ function getTemplateStep_6() {
                         </div>    
                     `;
 
-    var tagStep = getTemplateSeccionBodyStep('Recuerda que al momento de estar tramitando un crédito con UN BANCO es prioritario tener BUEN HISTORIAL DE BURO DE CREDITO '
-        , '¿Tu historial de buró de crédito es bueno?'
+    var tagStep = getTemplateSeccionBodyStep(''
+        , ''
         , tagOpciones
         , 8
     );
@@ -861,10 +907,10 @@ function getTemplateStep_7() {
     var stepBody = document.getElementById('stepBody_7');
 
     var tagOpciones = `<div class="row">
-                          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
                               ${getTemplateTextBoxNum('txtCelular', '', 'Celular', 'required')}
                           </div>
-                          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
                               ${getTemplateTextBox('txtCorreo', '', 'Correo', 'required')}
                           </div>
                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -889,12 +935,12 @@ function getTemplateStep_8() {
     var stepBody = document.getElementById('stepBody_8');
 
     var tagOpciones = '';
-    tagOpciones += `<div id="step_6_Wait" style="width: 100%; text-align: center;">
+    tagOpciones += `<div id="step_8_Wait" style="width: 100%; text-align: center;">
                         <img src='images/loading.gif' alt="loading" style="height:280px;" />                    
                         <h3>Procesando envio de código de validación</h3>
                    </div>`;
 
-    tagOpciones += `<div id="step_6_row" class="row" hidden>
+    tagOpciones += `<div id="step_8_row" class="row" hidden>
                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                               ${getTemplateBtnChk('btnChkAutorizo', false, 'Autorizo a MAAY CAPITAL a consultar mi historial crediticio de cualquier SIC que estime conveniente.')}
                           </div>
@@ -953,6 +999,44 @@ function getTemplateStep_11() {
     stepBody_11.innerHTML = tagStep;
 }
 
+
+function getTemplateStep_Aquien_Debes() {
+
+
+
+    var stepBody = document.getElementById('stepBody_Aquien_Debes');
+
+    //col-xs-12 col-sm-12 col-md-6 col-lg-4
+    var tagOpciones = `<div class="col-12">
+                        ${getTemplateBtnTitleSubTitle('btnAquienDebes_INFONAVIT', 'INFONAVIT', '')}
+                        </div>` ;
+        tagOpciones += `<div class="col-12">
+                        ${getTemplateBtnTitleSubTitle('btnAquienDebes_BANCO', 'BANCO', '')}
+                        </div>
+                       `;
+
+    tagOpciones += `<div class="col-12">
+                        ${getTemplateBtnTitleSubTitle('btnAquienDebes_BANCOINFONAVIT', 'BANCO + INFONAVIT', '')}
+                    </div>
+                    `;
+
+    // var tagOpciones = `
+    // <h2 style="font-weight: bold;">¿A QUIEN LE DEBES?</h2>
+    //     <h3 style="font-weight: bold;"> - INFONAVIT</h3>
+    //     <h3 style="font-weight: bold;"> - BANCO</h3>
+    //     <h3 style="font-weight: bold;"> -  BANCO + INFONAVIT</h3>
+    // `;
+
+    var tagStep = getTemplateSeccionBodyStep(``
+        , `<h3 class="bold">¿A QUIEN LE DEBES?</h3>`
+        , tagOpciones
+        , 13
+    );
+
+    stepBody.innerHTML = tagStep;
+}
+
+
 /**
  * Viene de ADQUISICIÓN Step 4 ¿Tu historial de buró de crédito es bueno?  = NO
  */
@@ -963,10 +1047,12 @@ function getTemplateStep_Termina_HistorialMalo() {
     var stepBody = document.getElementById('stepBody_Termina_HistorialMalo');
 
 
-    var tagOpciones = ``;
+    var tagOpciones = `
+    <h2 class="text-center" style="font-weight: bold;">Lamentamos no poder atenderte en este momento. </h2>
+    <h2 class="text-center" style="font-weight: bold;">Te sugerimos mejorar tu historial crediticio y volver a contactarnos. </h2>
+    <h2 class="text-center" style="font-weight: bold;">Esperamos apoyarte en un futuro para cumplir tus sueños.</h2>`;
 
-    var tagStep = getTemplateSeccionBodyStep(`Lamentamos no poder atenderte en este momento. <br><br>Te sugerimos mejorar tu historial crediticio y volver a contactarnos. 
-    <br><br>Esperamos apoyarte en un futuro para cumplir tus sueños.`
+    var tagStep = getTemplateSeccionBodyStep(``
         , ''
         , tagOpciones
         , 6
@@ -975,6 +1061,28 @@ function getTemplateStep_Termina_HistorialMalo() {
     stepBody.innerHTML = tagStep;
 }
 
+function getTemplateStep_Termina_HistorialMalo_M() {
+
+
+
+    var stepBody = document.getElementById('stepBody_Termina_HistorialMalo_M');
+
+
+    var tagOpciones = `
+    <div class="w-100" style="padding: 5rem;">
+        <h3 class="" style="font-weight: bold;">Lamentamos no poder atenderte en este momento. </h3>
+        <h3 class="" style="font-weight: bold;">Te sugerimos pagar tu hipoteca puntuamente durante 12 meses como mínimo, y volver a contactarnos. </h3>
+        <h3 class="" style="font-weight: bold;">Esperamos apoyarte en un futuro para cumplir tus sueños.</h3>
+    </div>`;
+
+    var tagStep = getTemplateSeccionBodyStep(``
+        , ''
+        , tagOpciones
+        , 6
+    );
+
+    stepBody.innerHTML = tagStep;
+}
 
 function getTemplateAutorizado(_nivelAceptacion) {
 
@@ -1156,6 +1264,39 @@ function btnSelValorAproxMejorarClick() {
     }
 }
 
+
+/*================== STEP Aquien le debes ============================ */
+function btnAquienDebesClick() {
+
+    try {
+
+        //step_Aquien_Debes
+        
+        var btn = this;
+        var idspan = `span${btn.id}`;
+        var spanText = document.getElementById(idspan).innerHTML;
+        OBJCaptura.AquienDebes = spanText;
+        OBJCaptura.AquienDebesID = btn.id;
+        fg_switch_buttons_listado('stepBody_Aquien_Debes', btn);
+
+        // var stepBody_2 = document.getElementById('stepBody_2');
+        // var steptitle = stepBody_2.getElementsByClassName('step-title')[0];
+        // var stepsubtitle = stepBody_2.getElementsByClassName('step-subtitle')[0];
+
+        // steptitle.innerHTML = step_2_titulos[btn.id];
+        // stepsubtitle.innerHTML = step_2_subtitulos[btn.id];
+
+        PAGECONTROLS.controls.btnNext.click();
+    }
+    catch (e) {
+        fg_mensaje_problema_tecnico(e);
+    }
+}
+
+
+
+
+
 /*================== STEP 4 ============================ */
 function txtMontchange() {
     console.log(PAGECONTROLS.controls.txtMonto.value);
@@ -1211,8 +1352,8 @@ async function registrarProspecto() {
         const ds = await setProspecto();
         if (fg_resultOK(ds.result)) {
             OBJCaptura.idProspecto = ds.result[0].ID;
-            PAGECONTROLS.controls.step_6_Wait.hidden = true;
-            PAGECONTROLS.controls.step_6_row.hidden = false;
+            PAGECONTROLS.controls.step_8_Wait.hidden = true;
+            PAGECONTROLS.controls.step_8_row.hidden = false;
         }
 
     }
@@ -1278,15 +1419,16 @@ async function btnReenviarCodigoClick() {
     try {
 
         OBJCaptura.correo = PAGECONTROLS.controls.txtCorreo.value;
+        OBJCaptura.celular = PAGECONTROLS.controls.txtCelular.value;
 
         console.log(`Reenviamos correo ${OBJCaptura.correo}`);
-        PAGECONTROLS.controls.step_9_Wait.hidden = false;
-        PAGECONTROLS.controls.step_9_row.hidden = true;
+        PAGECONTROLS.controls.step_8_Wait.hidden = false;
+        PAGECONTROLS.controls.step_8_row.hidden = true;
 
         const ds = await reenviarCodigo();
         if (fg_resultOK(ds.result)) {
-            PAGECONTROLS.controls.step_9_Wait.hidden = true;
-            PAGECONTROLS.controls.step_9_row.hidden = false;
+            PAGECONTROLS.controls.step_8_Wait.hidden = true;
+            PAGECONTROLS.controls.step_8_row.hidden = false;
         }
     }
     catch (e) {
@@ -1492,6 +1634,9 @@ function Btn_Switch_Click() {
 
 $(document).ready(function () {
 
+    var footerDerechos = document.getElementById('footerDerechos');
+    var currentYear = new Date().getFullYear();
+    footerDerechos.innerHTML = `2012 - ${currentYear} © MAAY CAPITAL, todos los derechos reservados.`;
     getTemplateStep_1();
     getTemplateStep_2();
     getTemplateStep_3();
@@ -1504,8 +1649,10 @@ $(document).ready(function () {
     // getTemplateStep_9();
     // getTemplateStep_10();
     // getTemplateStep_11();
+    getTemplateStep_Aquien_Debes();
 
     getTemplateStep_Termina_HistorialMalo();
+    getTemplateStep_Termina_HistorialMalo_M();
     getTemplateStep_Felicidades();
 
     PAGECONTROLS = fg_setIFRAMEControls('lunaSignUpContainer');
@@ -1547,6 +1694,10 @@ $(document).ready(function () {
     PAGECONTROLS.controls.btnValorAproximadoMejorar_3.addEventListener('click', btnSelValorAproxMejorarClick);
     PAGECONTROLS.controls.btnValorAproximadoMejorar_4.addEventListener('click', btnSelValorAproxMejorarClick);
     PAGECONTROLS.controls.btnValorAproximadoMejorar_5.addEventListener('click', btnSelValorAproxMejorarClick);
+
+    PAGECONTROLS.controls.btnAquienDebes_INFONAVIT.addEventListener('click', btnAquienDebesClick);
+    PAGECONTROLS.controls.btnAquienDebes_BANCO.addEventListener('click', btnAquienDebesClick);
+    PAGECONTROLS.controls.btnAquienDebes_BANCOINFONAVIT.addEventListener('click', btnAquienDebesClick);
 
     
 
