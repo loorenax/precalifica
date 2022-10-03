@@ -26,8 +26,8 @@ var formatter = new Intl.NumberFormat('es-MX', {
     // and is usually already 2
 });
 
-const _API_ = `https://localhost:44375/api/preclasifica/`;
-//const _API_ = `http://loorenax-002-site2.ctempurl.com/api/preclasifica/`;
+//const _API_ = `https://localhost:44375/api/preclasifica/`;
+const _API_ = `http://loorenax-002-site2.ctempurl.com/api/preclasifica/`;
 
 
 function fg_mensaje_problema_tecnico(e) {
