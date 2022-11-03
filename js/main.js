@@ -62,7 +62,11 @@ var DtActividades = [
 , {id:'2', descripcion:'Independiente'}
 ];
 
-
+var StepList = {
+    'ADQUISICION': [1,2,3,5,6,7,8,95],
+    'MEJORA DE HIPOTECA': [1,2,3,4,20,5,6,7,8,95],
+    'LIQUIDEZ': [1,2,3,5,6,7,8,95]
+}
 
 /**
  * Tuna Signup Form Wizard
@@ -87,6 +91,7 @@ var lunaWizard = {
         // var container = $(".container");
         var container = $(".container-falso");
 
+
         if (windowWidth >= 768) {
             lunaContainer.add(lunaLeft).add(lunaLeftOverlay).innerHeight(windowHeight - (stepsfooterbanner + 18));
         } else {
@@ -108,7 +113,8 @@ var lunaWizard = {
     changeStep: function (currentStep, nextStep) {
         var self = this;
         var permitirAvanzar = true;
-         console.log(`Inicia nextStep en: ${nextStep}`);   
+        var isBack = false;
+         
 
         $('html,body').animate({ scrollTop: 0 }, 'slow');
 
@@ -130,7 +136,7 @@ var lunaWizard = {
         // })
 
 
-
+        PAGECONTROLS.controls.stepFooter.hidden = false;     
         //Change Step
         if (nextStep > currentStep) {
             // if (!form.valid()) {
@@ -138,7 +144,7 @@ var lunaWizard = {
             //     return;
             // }
 
-
+                
             /************  Validación de captura  *******/
             PAGECONTROLS.controls.lunaStepsFooterError.innerHTML = `&nbsp;`;
             switch (currentStep) {
@@ -159,13 +165,12 @@ var lunaWizard = {
                             PAGECONTROLS.controls.lunaStepsFooterError.innerHTML = `Por favor debe seleccionar una opción para avanzar.`;
                             permitirAvanzar = false;
                         }
-
-                        console.log(`OBJCaptura.tipoCreditoID: ${OBJCaptura.tipoCreditoID}`);
+                       
                         if(permitirAvanzar){
                             if(OBJCaptura.tipoCreditoID != 'btnSelMejorar'){
-                                console.log(`nextStep: ${nextStep}`);
+                                
                                 nextStep = nextStep + 1;
-                                console.log(`nextStep: ${nextStep}`);
+                                
                             }                            
                         }
 
@@ -230,7 +235,7 @@ var lunaWizard = {
                     }
 
                     nextStep = 95;
-                    var stepscount = document.getElementsByClassName('steps-count')[0].hidden = true;
+                    document.getElementsByClassName('steps-next-back')[0].hidden = true;
                     break;
                 //Aquien le debes
                 case '20':
@@ -251,12 +256,45 @@ var lunaWizard = {
 
             $(".step-active").removeClass("step-active").addClass("step-hide");
         } else {
+
+            isBack = true;    
+            //var paso = localStorage.getItem('stepBack');
+            var paso = nextStep;
+            var list = StepList[OBJCaptura.tipoCredito];
+
+            for(i=0; i<list.length; i++){
+                
+                if(list[i] == currentStep){
+                    paso = list[i - 1];
+                }
+            }     
+
+            // if(paso != null){
+            //     nextStep = paso;
+            //     localStorage.removeItem('stepBack');
+            // }
+            nextStep = paso;
             $(".step-active").removeClass("step-active");
         }
 
+        if(OBJCaptura.tipoCredito == 'ADQUISICION'){
+            OBJCaptura.MontoCredito = OBJCaptura.valorAproximadoMejorar;
+        }
+        else if(OBJCaptura.tipoCredito == 'MEJORA DE HIPOTECA'){
+            OBJCaptura.MontoHipotecaActual = OBJCaptura.valorAproximado;
+            OBJCaptura.ValorAproximadoInmuebleHipotecaMejorar = OBJCaptura.valorAproximadoMejorar
+        }   
+        else if(OBJCaptura.tipoCredito == 'LIQUIDEZ'){
+            OBJCaptura.MontoCredito = OBJCaptura.valorAproximadoMejorar;
+            OBJCaptura.ValorAproximadoInmuebleGarantia = OBJCaptura.valorAproximadoMejorar
+        }   
 
+        //console.log(`OBJCaptura: ${JSON.stringify(OBJCaptura)}`);
+        console.log(`currentStep: ${currentStep}`);    
+        console.log(`nextStep: ${nextStep}`);    
 
         var nextStepEl = $(".step[data-step-id='" + nextStep + "']");
+        
         nextStepEl.removeClass("step-hide").addClass("step-active");
 
         var stepCountsEl = $(".steps-count");
@@ -309,7 +347,9 @@ var lunaWizard = {
         }
 
         if (PAGECONTROLS.controls.stepBody_8.className.indexOf('step-active') != -1) {
-            registrarProspecto();
+
+            if(!isBack)
+                registrarProspecto();
         }
         
         // if (PAGECONTROLS.controls.stepBody_8.className.indexOf('step-active') != -1) {
@@ -337,11 +377,17 @@ var lunaWizard = {
                 irsetProspectoMalHistorial();
              }
 
+        /*
         if (PAGECONTROLS.controls.stepBody_Felicidades.className.indexOf('step-active') != -1) {
 
             // El el punto dnde se envia el codigo ahi se guarda los datos del prospecto
             //En este punto confirmamos los datos y se guarda los datos de la preclasificación
             irsetProspectoAutenticado();
+        }
+        */   
+        if (PAGECONTROLS.controls.stepBody_Felicidades.className.indexOf('step-active') != -1) {
+
+            irAutenticarCodigoValidacion();
         }
                 
     },
@@ -961,11 +1007,22 @@ function getTemplateStep_8() {
 /*Aqui termina */
 function getTemplateStep_Felicidades(){
 
-    var stepBody = document.getElementById('stepBody_Felicidades');
+   var stepBody = document.getElementById('stepBody_Felicidades');
 
-   var tagStep = getTemplateSeccionBodyStep('¡Felicidades!'
+   var tagOpciones = '';
+   tagOpciones += `<div id="step_Felicidades_Wait" style="width: 100%; text-align: center;">
+                       <img src='images/loading.gif' alt="loading" style="height:280px;" />                    
+                       <h3>Procesando envio de código de validación</h3>
+                  </div>`;
+
+   tagOpciones += `<div id="Div_Felicidades" style="width: 100%; text-align: center;" hidden>
+                        <h1 style="color: #333;font-weight: bold;">¡Felicidades!</h1>
+                        <h3 class="text-center p-2" >Un asesor certificado por la AMHEX se pondrá en contacto contigo para continuar con tu trámite.</h3>   
+                   </div>`;
+
+   var tagStep = getTemplateSeccionBodyStep(''
        , ''
-       , '<h3 class="text-center p-2">Un asesor certificado por la AMHEX se pondrá en contacto contigo para continuar con tu trámite.</h3>'
+       , tagOpciones
        , 9
    );
 
@@ -1299,9 +1356,7 @@ function btnAquienDebesClick() {
 
 /*================== STEP 4 ============================ */
 function txtMontchange() {
-    console.log(PAGECONTROLS.controls.txtMonto.value);
     PAGECONTROLS.controls.txtMonto.value = formatter.format(PAGECONTROLS.controls.txtMonto.value);
-    console.log(PAGECONTROLS.controls.txtMonto.value);
 }
 
 
@@ -1339,7 +1394,10 @@ async function setProspecto() {
             referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
             body: JSON.stringify(OBJCaptura)
         }
-    );
+    ).catch((error) => {
+        //console.log(error)
+        fg_mensaje_problema_tecnico(error);
+      });
 
     const data = await response.json();
 
@@ -1354,6 +1412,11 @@ async function registrarProspecto() {
             OBJCaptura.idProspecto = ds.result[0].ID;
             PAGECONTROLS.controls.step_8_Wait.hidden = true;
             PAGECONTROLS.controls.step_8_row.hidden = false;
+        }
+        else{
+            PAGECONTROLS.controls.step_8_Wait.hidden = false;
+            PAGECONTROLS.controls.step_8_row.hidden = true;
+            PAGECONTROLS.controls.btnBack.click();
         }
 
     }
@@ -1383,10 +1446,12 @@ function obtenerValores(){
 
     OBJCaptura.idEstadoCivil = PAGECONTROLS.controls.cmbEstadoCivil.value;
     OBJCaptura.idActividad = PAGECONTROLS.controls.cmbActividad.value;
-    OBJCaptura.tieneBuenHistorial =  fg_getResultSwitch('BtnGpo_HistorialCreditoBueno');       //fg_isChecked_BtnChk(PAGECONTROLS.controls.BtnHistorialCreditoBueno);
+    //OBJCaptura.tieneBuenHistorial =  fg_getResultSwitch('BtnGpo_HistorialCreditoBueno');       //fg_isChecked_BtnChk(PAGECONTROLS.controls.BtnHistorialCreditoBueno);
 
 
     OBJCaptura.autorizoContactoAsesor = fg_isChecked_BtnChk(PAGECONTROLS.controls.btnChkAutorizo);    
+
+    console.log(`OBJCaptura.autorizoContactoAsesor: ${OBJCaptura.autorizoContactoAsesor}`);
 }
 
 async function reenviarCodigo() {
@@ -1421,7 +1486,6 @@ async function btnReenviarCodigoClick() {
         OBJCaptura.correo = PAGECONTROLS.controls.txtCorreo.value;
         OBJCaptura.celular = PAGECONTROLS.controls.txtCelular.value;
 
-        console.log(`Reenviamos correo ${OBJCaptura.correo}`);
         PAGECONTROLS.controls.step_8_Wait.hidden = false;
         PAGECONTROLS.controls.step_8_row.hidden = true;
 
@@ -1470,14 +1534,22 @@ async function irAutenticarCodigoValidacion() {
 
     const ds = await autenticarCodigoValidacion();
 
-    console.log('Ya fue a autenticar');
-    if (fg_resultOK(ds.result)) {
-
-        console.log('Si se autentico?');
-        console.log(ds.result);
+    if (fg_resultOKSinMensaje(ds.result)) {
 
         OBJCaptura.codigoAutenticado = true;
-        PAGECONTROLS.controls.btnNext.click();
+        irsetProspectoAutenticado();
+
+        var step_Felicidades_Wait = document.getElementById('step_Felicidades_Wait');
+        var Div_Felicidades = document.getElementById('Div_Felicidades');
+
+        step_Felicidades_Wait.hidden = true;
+        Div_Felicidades.hidden = false;
+
+    }
+    else{
+        localStorage.setItem('stepBack', 8);
+        fg_mostrar_error(PAGECONTROLS.controls.txtCodigoValidacion, 'El código no es valido.');
+        PAGECONTROLS.controls.btnBack.click();
     }
 
 }
@@ -1515,10 +1587,7 @@ async function validarCredito() {
     const ds = await irValidarCredito();
 
     PAGECONTROLS.controls.stepFooter.hidden = false;
-    console.log('Ir a validar el crédito');
     if (fg_resultOK(ds.result)) {
-
-        console.log('Se valido el crédito?');
 
         getTemplateAutorizado(ds.result[0].nivelAceptacion);
         PAGECONTROLS.controls.formSteps.hidden = true;
@@ -1563,7 +1632,6 @@ async function irsetProspectoMalHistorial() {
 
     const ds = await setProspectoMalHistorial();
     
-    console.log('Termino');
     setTimeout(function(){
         console.log('Iniciar');
         location.href = location.href
@@ -1575,7 +1643,10 @@ async function setProspectoAutenticado() {
     //     Email:'mirra.espinoza@gmail.com',
     //     Password:'test'
     //     };
+    var idProspecto = OBJCaptura.idProspecto;
     obtenerValores();
+    OBJCaptura.idProspecto = idProspecto;
+    
     const urlAPI = `${_API_}setProspectoAutenticado`;
     const response = await fetch(
         urlAPI
@@ -1604,7 +1675,6 @@ async function irsetProspectoAutenticado() {
 
     const ds = await setProspectoAutenticado();
     
-    console.log('Termino');
     setTimeout(function(){
         console.log('Iniciar');
         location.href = location.href
@@ -1614,21 +1684,30 @@ async function irsetProspectoAutenticado() {
 
 function Btn_Switch_Click() {
 
-    var btn = this;
-    var agrupador = btn.parentElement;
+    try{
+        var btn = this;
+        var agrupador = btn.parentElement;
 
-    var tool = new Object();
-    tool.controls = fg_obtener_controles_agrupador(agrupador.id);
+        var tool = new Object();
+        tool.controls = fg_obtener_controles_agrupador(agrupador.id);
 
-    //Primero reseteamos la clase a todos los buttons del grupo; se esperan todos apliquen el mismo criterio de cambio de listado
-    $.each(tool.controls, function (key, value) {
-        if (value.tagName == 'BUTTON') {
-            value.classList = 'btn bg-segundo-plano';
-        }
-    })
+        //Primero reseteamos la clase a todos los buttons del grupo; se esperan todos apliquen el mismo criterio de cambio de listado
+        $.each(tool.controls, function (key, value) {
+            if (value.tagName == 'BUTTON') {
+                value.classList = 'btn bg-segundo-plano';
+            }
+        })
 
-    btn.classList = 'btn bg-primer-plano';
+        btn.classList = 'btn bg-primer-plano';
 
+        var elemento = btn.id.split('Btn').join('');
+        var arrElemento = elemento.split('_');
+        OBJCaptura[arrElemento[0]] = arrElemento[1];
+        PAGECONTROLS.controls.btnNext.click();
+    }
+    catch(e){
+        fg_mensaje_problema_tecnico(e);
+    }
 }
 
 

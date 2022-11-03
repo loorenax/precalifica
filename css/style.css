@@ -130,7 +130,7 @@ p {
     font-weight: bold;
 }
 .steps-footer {
-    position: fixed;
+    /* position: fixed; */
     bottom: 0;
     width: 100%;
 }
@@ -160,6 +160,9 @@ p {
 .steps-footer-aviso a{
     text-decoration: none;
     color: #fff;
+}
+.steps-next-back{
+    text-align: center;
 }
 #lblEstadoMunicipio {
     font-size: 1.25rem;
@@ -725,7 +728,7 @@ p {
 }
 
 .luna-steps-footer{
-    margin-bottom: 200px;
+    margin-bottom: 10px;
     padding-right: 50px;
 }
 .step-title {
@@ -907,7 +910,7 @@ p {
     width: 30%;
     margin-left: 10px;
     white-space: pre-wrap;
-    height: 80px;    
+    min-height: 80px;    
 }
 
 .step-body .btn-principal:hover {
@@ -942,18 +945,18 @@ p {
     font-weight: 500;
     font-size: 80%;
     text-align: center;
-    padding-left: 75px;
-    padding-right: 75px;
+    padding-left: 45px;
+    padding-right: 45px;
 }
 .btn-principal .contenedor-img {
-    height: 60px;
-    width: 25%;
+    height: 30px;
+    width: 15%;
     position: absolute;
     bottom: 15px;
     text-align: center;
 }
 .contenedor-img img{
-    height: 60px;
+    height: 30px;
     width: auto;
 }
 
@@ -1030,8 +1033,8 @@ p {
 }
 
 .step-btn-back {
-    background-color: var(--theme-input-bg);
-    color: var(--theme-brand-color);
+    background-color: var(--theme-secondary-color);
+    color: var(--theme-input-bg);
     outline: none;
 }
 
@@ -1350,7 +1353,6 @@ p {
     {
         margin-top: 22px;
     }
-
 }
 
 @media only screen and (max-width: 767px) {
@@ -1480,5 +1482,49 @@ p {
         padding: 15px 0;
     }
 
+    
 
+}
+
+
+@media only screen and (min-width: 768px) {
+
+    .step-body .btn-principal small {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+    .btn-principal .contenedor-img {
+        height: 60px;
+        width: 15%;
+        position: absolute;
+        bottom: 15px;
+        text-align: center;
+    }
+
+    .contenedor-img img {
+        height: 60px;
+        width: auto;
+    }
+
+
+    .steps-footer {
+        position: fixed;
+    }
+
+    .luna-steps-footer {
+        margin-top: 300px;
+        padding-right: 50px;
+    }
+
+}
+
+@media only screen and (min-width: 992px) {
+    .luna-steps-footer {
+        margin-top: 10px;
+        padding-right: 50px;
+    }
+    .steps-next-back{
+        text-align: end;
+    }
 }

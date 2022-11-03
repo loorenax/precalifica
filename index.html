@@ -11,6 +11,12 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="keywords" content="">
+
+
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;subset=latin-ext"
         rel="stylesheet" />
 
@@ -18,7 +24,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/font.css" />
     <link rel="stylesheet" href="css/plugins.css" />
-    <link rel="stylesheet" href="css/style.css?Date.now()" />
+    <link rel="stylesheet" href="css/style.css?11" />
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -54,10 +60,18 @@
                         <div class='steps-count'>
                             Paso <span class="step-current">1</span>/<span class="step-count"></span>
                         </div>
+                        <div class="steps-next-back">
+                            <button id="btnBack" type="button" href="javascript:void(0)" class="btn step-btn-back prevStep"
+                                style="margin-right: 3rem;">
+                                <i class="icon icon-arrow-left2"></i> Regresar
+                            </button>
+                            <button id="btnNext" type="button" href="javascript:void(0)" class="btn step-btn-next nextStep">Siguiente <i class="icon icon-arrow-right2"></i></button>
+                        </div>                                                     
                         <div class="steps-header">
                             <div class="steps-header_title">Precalifícate</div>
                             <h4 class="steps-header_subtitle"></h4>
                         </div>
+
                     </div>
                     <!-- <form id="formSteps" action='post' name='signupForm' autocomplete="off"> -->
                     <div id="formSteps" >
@@ -119,13 +133,13 @@
                                     <div id="lunaStepsFooterError" class="alert danger" role="alert">&nbsp;</div>
                                 </div>
 
-                                <div class="col-12 text-right">
+                                <!-- <div class="col-12 text-right">
                                     <button id="btnBack" type="button" href="javascript:void(0)" class="btn step-btn-back prevStep"
                                         style="margin-right: 3rem;">
                                         <i class="icon icon-arrow-left2"></i> Regresar
                                     </button>
                                     <button id="btnNext" type="button" href="javascript:void(0)" class="btn step-btn-next nextStep">Siguiente <i class="icon icon-arrow-right2"></i></button>
-                                </div>                                
+                                </div>                                 -->
                                 
                             </div>
                         </div>
@@ -182,8 +196,8 @@
     <script type="text/javascript" src="js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="js/bootstrap-datepicker.min.js"></script>
     <script type="text/javascript" src="js/bootbox.min.js"></script>
-    <script type="text/javascript" src="js/util.js?Date.now()"></script>
-    <script type="text/javascript" src="js/main.js?Date.now()"></script>
+    <script type="text/javascript" src="js/util.js?2103"></script>
+    <script type="text/javascript" src="js/main.js?1213"></script>
     <!-- endbuild -->
 </body>
 

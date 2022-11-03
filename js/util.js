@@ -27,13 +27,33 @@ var formatter = new Intl.NumberFormat('es-MX', {
 });
 
 //const _API_ = `https://localhost:44375/api/preclasifica/`;
-const _API_ = `http://loorenax-002-site2.ctempurl.com/api/preclasifica/`;
+//const _API_ = `http://loorenax-002-site2.ctempurl.com/api/preclasifica/`;
+const _API_ = `https://wsprecalifica.maaycapital.com/api/preclasifica/`;
 
 
 function fg_mensaje_problema_tecnico(e) {
 
+    console.log(e);
+    var mensaje = 'Existe un problema técnico, espere un momento e intente nuevamente.';
+    if (e != null) {
+
+        if (e.Mensaje != null) {
+            mensaje = `Existe un problema técnico: ${e.Mensaje}`;
+        }
+        else if (e.message != null) {
+            mensaje = `Existe un problema técnico: ${e.message}`;
+        }
+        else if (e.Mensaje_Procedimiento != null) {
+            mensaje = `Existe un problema técnico: ${e.Mensaje_Procedimiento}`;
+        }
+        else if (e.mensajeProcedimiento != null) {
+            mensaje = `Existe un problema técnico: ${e.mensajeProcedimiento}`;
+        }
+
+    }
+
     bootbox.dialog({
-        message: 'Existe un problema ténico, por favor espere e intente nuevamente o avise a soporte.',
+        message: mensaje,
         title: '<span style="color:white;">' + 'Problema técnico' + '</span>',
         locale: _LOCALE_,
         closeButton: true,
@@ -466,6 +486,53 @@ function fg_resultOK(_result) {
                         , 'No puede continuar.'
                         , _result[0].Solucion_Procedimiento
                     );
+                }
+                else {
+                    console.log(`Error: ${_result[0].Mensaje_Procedimiento}`);
+                    fg_mensaje_problema_tecnico(null);
+                }
+
+            }
+            else {
+                console.log(`Error: Al parecer fue el servicio ya que el resul no trae elementos.`);
+                fg_mensaje_problema_tecnico(null);
+            }
+
+        }
+        else {
+
+            console.log(`Error: Al parecer fue el servicio ya que el resul llego nulo.`);
+            fg_mensaje_problema_tecnico(null);
+        }
+
+    }
+    catch (e) {
+        fg_mensaje_problema_tecnico(e);
+    }
+
+    return resultadoOK;
+}
+
+function fg_resultOKSinMensaje(_result) {
+
+    var resultadoOK = false;
+
+    try {
+
+        if (_result != null) {
+            if (_result.length > 0) {
+
+                if (_result[0].Estatus_Procedimiento == _OK_) {
+                    resultadoOK = true;
+                }
+                else if (_result[0].Estatus_Procedimiento == _RESTRICCION_) {
+                    /*
+                    fg_mensaje_aviso_restriccion('Restricción'
+                        , _result[0].Mensaje_Procedimiento
+                        , 'No puede continuar.'
+                        , _result[0].Solucion_Procedimiento
+                    );
+                    */
                 }
                 else {
                     console.log(`Error: ${_result[0].Mensaje_Procedimiento}`);
