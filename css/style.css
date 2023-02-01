@@ -281,17 +281,21 @@ p {
 }
 
 .steps-footer-derecho {
-    color: var(--theme-input-bg);
+    color: #000;
     display: inline-block;
 }
 
 .steps-footer-aviso {
-    color: var(--theme-input-bg);
+    color: #000;
+    text-transform: uppercase;
+}
+.steps-footer-aviso a {
+    color: #000;
     text-transform: uppercase;
 }
 
 .steps-footer-terminos {
-    color: var(--theme-input-bg);
+    color: #000;
     text-transform: uppercase;
 }
 
@@ -1503,7 +1507,7 @@ p {
     }
 
     .contenedor-img img {
-        height: 60px;
+        height: 45px;
         width: auto;
     }
 

@@ -35,7 +35,7 @@ var DtColonias;
 
 var step_2_titulos = {
    btnSelAdquirir: 'Valor aproximado del inmueble que deseas comprar'
- , btnSelMejorar: 'Monto de tu hipoteca actual' 
+ , btnSelMejorar: '¿Cuánto debes a tu crédito hipotecario?' 
  , btnSelObtener: `Monto del crédito que necesitas.` 
 }
 
@@ -683,10 +683,10 @@ function getTemplateStep_1() {
                     , `<div class="contenedor-img"><img src="images/14-01.png" alt=""></div>`
                     );
     var tagbtnSelMejorar = getTemplateBtnTitleSubTitle_Principal('btnSelMejorar', 'MEJORA DE HIPOTECA'
-                    , `Quiero refinanciar mi crédito actual.`
+                    , `Refinanciar mi crédito actual.`
                     , `<div class="contenedor-img"><img src="images/15-01.png" alt=""></div>`);
     var tagbtnSelObtener = getTemplateBtnTitleSubTitle_Principal('btnSelObtener', 'LIQUIDEZ'
-                    , `Quiero liquidez utilizando mi propiedad como garantía.`
+                    , `Utilizando mi propiedad como garantía.`
                     , `<div class="contenedor-img"><img src="images/16-01.png" alt=""></div>`);
 
     var tagOpciones = `
@@ -797,7 +797,7 @@ function getTemplateStep_3() {
         tagOpciones = `<div class="row">${tagOpciones}</div>`;
 
 
-    var tagStep = getTemplateSeccionBodyStep('Valor apróximado del inmueble de la hipoteca a mejorar'
+    var tagStep = getTemplateSeccionBodyStep('Valor de la propiedad que tiene hipoteca'
         , ''
         , tagOpciones
         , 0
@@ -961,7 +961,8 @@ function getTemplateStep_7() {
                           </div>
                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                               <p>
-                                Al dar clic en Siguiente, acepto recibir notificaciones por SMS y correo electrónico y que mis datos personales sean tratados para las finalidades descritas en el <strong>Aviso de Privacidad</strong>, y acepto los <strong>Términos y Condiciones de Uso</strong>.
+                                Al dar clic en Siguiente, acepto recibir notificaciones por SMS y correo electrónico y que mis datos personales sean tratados para las finalidades descritas en el 
+                                <a href="AvisodePrivacidad2022.html" target="_blank">Aviso de privacidad</a>.
                               </p>
                           </div>
 
@@ -1287,7 +1288,7 @@ function btnSelValorAproxClick() {
         //Se actualiza las leyendas del step 3 en base a flujo que selecciono al inicio
         var step_3_titulos = {
             btnSelAdquirir: 'Monto apróximado del crédito que necesitas.' 
-          , btnSelMejorar: 'Valor apróximado del inmueble de la hipoteca a mejorar'
+          , btnSelMejorar: 'Valor de la propiedad que tiene hipoteca'
           , btnSelObtener: 'Valor apróximado del inmueble que desas dejar en garantia.'  
          }
         var stepBody_3 = document.getElementById('stepBody_3');
