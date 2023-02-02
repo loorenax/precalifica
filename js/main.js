@@ -42,7 +42,7 @@ var step_2_titulos = {
 var step_2_subtitulos = {
     btnSelAdquirir: 'Este dato nos ayuda a conocer el Aforo que los Bancos pueden otorgarte.'
   , btnSelMejorar: 'Este dato nos ayuda a conocer el máximo de crédito que los Bancos te pueden otorgar.' 
-  , btnSelObtener: `<span class="text-info">(Te recordamos que únicamente se aceptan casa habitación  y departamentos)</span><br>Este dato nos ayuda a conocer el máximo de crédito que los Bancos te pueden otorgar.` 
+  , btnSelObtener: `<span class="text-info">(Te recordamos que únicamente se aceptan casa habitación y departamentos)</span><br>Este dato nos ayuda a conocer el máximo de crédito que los Bancos te pueden otorgar.` 
  }
 
  var step_Aquien_Debes = {
@@ -54,7 +54,7 @@ var step_2_subtitulos = {
  
  var DtEstadosCivil = [
     {id:'1', descripcion:'Soltero'}
-  , {id:'2', descripcion:'Casado por bienes  Separados'}
+  , {id:'2', descripcion:'Casado Por Bienes Separados'}
   , {id:'3', descripcion:'Casado Sociedad Conyugal'}
 ];
 var DtActividades = [
@@ -63,9 +63,9 @@ var DtActividades = [
 ];
 
 var StepList = {
-    'ADQUISICION': [1,2,3,5,6,7,8,95],
-    'MEJORA DE HIPOTECA': [1,2,3,4,20,5,6,7,8,95],
-    'LIQUIDEZ': [1,2,3,5,6,7,8,95]
+    'ADQUISICION': [1,2,3,5,6,7,95],
+    'MEJORA DE HIPOTECA': [1,2,3,4,20,5,6,7,95],
+    'LIQUIDEZ': [1,2,3,5,6,7,95]
 }
 
 /**
@@ -227,7 +227,8 @@ var lunaWizard = {
                     if (!fg_valida_captura_seccion('stepBody_7')) {
                         permitirAvanzar = false;
                     }
-
+                    nextStep = 95;
+                    document.getElementsByClassName('steps-next-back')[0].hidden = true;
                     break;
                 case '8':
                     if (!fg_valida_captura_seccion('stepBody_8')) {
@@ -346,7 +347,7 @@ var lunaWizard = {
             prevStepEl.css("display", "inline-block");
         }
 
-        if (PAGECONTROLS.controls.stepBody_8.className.indexOf('step-active') != -1) {
+        if (PAGECONTROLS.controls.stepBody_7.className.indexOf('step-active') != -1) {
 
             if(!isBack)
                 registrarProspecto();
@@ -678,7 +679,7 @@ function getTemplateBtnChk(_idBtnChk, _isChecked, _Etiqueta, _Propiedad_Adiciona
 function getTemplateStep_1() {
 
     var stepBody_1 = document.getElementById('stepBody_1');
-    var tagbtnSelAdquirir = getTemplateBtnTitleSubTitle_Principal('btnSelAdquirir', 'ADQUISICION'
+    var tagbtnSelAdquirir = getTemplateBtnTitleSubTitle_Principal('btnSelAdquirir', 'ADQUISICIÓN'
                     , `Quiero comprar una casa.`
                     , `<div class="contenedor-img"><img src="images/14-01.png" alt=""></div>`
                     );
@@ -698,7 +699,7 @@ function getTemplateStep_1() {
                         </div>
                      `;
 
-    var tagStep = getTemplateSeccionBodyStep('¿Que estas buscando?'
+    var tagStep = getTemplateSeccionBodyStep('¿Qué estás buscando?'
         , ''
         , tagOpciones
         , 0
@@ -717,18 +718,18 @@ function getTemplateStep_2() {
     // tagOpciones += getTemplateBtnTitleSubTitle('btnSelMasde4Mil', 'Más de $4 millones', '');
 
     var tagOpciones = `<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                        ${getTemplateBtnTitleSubTitle('btnValorAproximado_1', 'Menos de 500 mil ', '')}
+                        ${getTemplateBtnTitleSubTitle('btnValorAproximado_1', 'Menos de 500 mil', '')}
                         </div>` ;
         tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                            ${getTemplateBtnTitleSubTitle('btnValorAproximado_2', 'De $500 mil  a $1 millón', '')}
+                            ${getTemplateBtnTitleSubTitle('btnValorAproximado_2', 'De $500 mil a $1 millón', '')}
                         </div>
                        `;
         tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                            ${getTemplateBtnTitleSubTitle('btnValorAproximado_3', 'Entre $1millón y  $2 millones', '')}
+                            ${getTemplateBtnTitleSubTitle('btnValorAproximado_3', 'Entre $1 millón y  $2 millones', '')}
                         </div>
                         `;
         tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                            ${getTemplateBtnTitleSubTitle('btnValorAproximado_4', 'Entre $2millones y  $3 millones', '')}
+                            ${getTemplateBtnTitleSubTitle('btnValorAproximado_4', 'Entre $2 millones y $3 millones', '')}
                         </div>
                         `;
         tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
@@ -778,17 +779,17 @@ function getTemplateStep_3() {
     //     tagOpciones += getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_5', 'De $4 millones o más…', '');
     
         var tagOpciones = `<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                        ${getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_1', 'Menos de 500 mil ', '')}
+                        ${getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_1', 'Menos de 500 mil', '')}
                         </div>` ;
 
         tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                            ${getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_2', 'De $500 mil  a $1 millón', '')}
+                            ${getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_2', 'De $500 mil a $1 millón', '')}
                         </div>` ;
         tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                            ${getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_3', 'Entre $1millón y  $2 millones', '')}
+                            ${getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_3', 'Entre $1 millón y $2 millones', '')}
                         </div>` ;
         tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                            ${getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_4', 'Entre $2millones y  $3 millones', '')}
+                            ${getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_4', 'Entre $2 millones y $3 millones', '')}
                         </div>` ;
         tagOpciones += `<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                             ${getTemplateBtnTitleSubTitle('btnValorAproximadoMejorar_5', 'De $4 millones o más…', '')}
@@ -854,7 +855,29 @@ function getTemplateStep_5() {
              ${getTemplateSelect('cmbActividad', '', 'Actividad', '')}
     </div>`;
 
+
+
+    
     tagOpciones = `<div class="row">${tagOpciones}</div>`;
+
+
+    tagOpciones += `<div class="row">
+                          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                              ${getTemplateTextBoxNum('txtCelular', '', 'Celular', 'required')}
+                          </div>
+                          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                              ${getTemplateTextBox('txtCorreo', '', 'Correo', 'required')}
+                          </div>
+                          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                              <p>
+                              Al dar clic en siguiente, acepto recibir notificaciones por SMS y correo electrónico y que mis datos personales sean tratados para las finalidades descritas en el 
+                                <a href="AvisodePrivacidad2022.html" target="_blank">aviso de privacidad</a>.
+                              </p>
+                          </div>
+
+                        </div>`;
+
+
 
     var tagStep = getTemplateSeccionBodyStep('Compártenos tus datos'
         , 'Tus datos se protegerán bajo estándares internacionales en manejo de datos y encriptación para resguardo.'
@@ -870,7 +893,7 @@ function getTemplateStep_6() {
     var stepBody = document.getElementById('stepBody_6');
     //var tagOpciones = getTemplateBtnChk('BtnHistorialCreditoBueno', '', '¿Tu historial de buró de crédito es bueno? ', 'required');
     var tagOpciones = `
-                        <h2 class="text-center" style="font-weight: bold;">Recuerda que al momento de estar tramitando un crédito con UN BANCO es prioritario tener BUEN HISTORIAL DE BURO DE CREDITO</h2>
+                        <h2 class="text-center" style="font-weight: bold;">Recuerda que al momento de estar tramitando un crédito con un banco es prioritario tener buen historial de burro de crédito</h2>
                         <h4 class="text-center">¿Tu historial de buró de crédito es bueno?</h4>
                         <div class="col-xs-12 col-sm-12 col-md-12 mb-2 text-center">                                                      
                                 <div id="BtnGpo_HistorialCreditoBueno" class="btn-group btn-group-switch" role="group" aria-label="First group">
@@ -948,7 +971,7 @@ function getTemplateStep_7_Yano() {
     stepBody_7.innerHTML = tagStep;
 }
 
-function getTemplateStep_7() {
+function getTemplateStep_7_Yano_2() {
 
     var stepBody = document.getElementById('stepBody_7');
 
@@ -977,17 +1000,17 @@ function getTemplateStep_7() {
     stepBody.innerHTML = tagStep;
 }
 
-function getTemplateStep_8() {
+function getTemplateStep_7() {
 
-    var stepBody = document.getElementById('stepBody_8');
+    var stepBody = document.getElementById('stepBody_7');
 
     var tagOpciones = '';
-    tagOpciones += `<div id="step_8_Wait" style="width: 100%; text-align: center;">
+    tagOpciones += `<div id="step_7_Wait" style="width: 100%; text-align: center;">
                         <img src='images/loading.gif' alt="loading" style="height:280px;" />                    
                         <h3>Procesando envio de código de validación</h3>
                    </div>`;
 
-    tagOpciones += `<div id="step_8_row" class="row" hidden>
+    tagOpciones += `<div id="step_7_row" class="row" hidden>
                           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                               ${getTemplateBtnChk('btnChkAutorizo', false, 'Autorizo a MAAY CAPITAL a consultar mi historial crediticio de cualquier SIC que estime conveniente.')}
                           </div>
@@ -1013,7 +1036,7 @@ function getTemplateStep_Felicidades(){
    var tagOpciones = '';
    tagOpciones += `<div id="step_Felicidades_Wait" style="width: 100%; text-align: center;">
                        <img src='images/loading.gif' alt="loading" style="height:280px;" />                    
-                       <h3>Procesando envio de código de validación</h3>
+                       <h3>Procesando envío de código de validación</h3>
                   </div>`;
 
    tagOpciones += `<div id="Div_Felicidades" style="width: 100%; text-align: center;" hidden>
@@ -1086,7 +1109,7 @@ function getTemplateStep_Aquien_Debes() {
     // `;
 
     var tagStep = getTemplateSeccionBodyStep(``
-        , `<h3 class="bold">¿A QUIEN LE DEBES?</h3>`
+        , `<h3 class="bold">¿A QUIÉN LE DEBES?</h3>`
         , tagOpciones
         , 13
     );
@@ -1128,8 +1151,8 @@ function getTemplateStep_Termina_HistorialMalo_M() {
 
     var tagOpciones = `
     <div class="w-100" style="padding: 5rem;">
-        <h3 class="" style="font-weight: bold;">Lamentamos no poder atenderte en este momento. </h3>
-        <h3 class="" style="font-weight: bold;">Te sugerimos pagar tu hipoteca puntuamente durante 12 meses como mínimo, y volver a contactarnos. </h3>
+        <h3 class="" style="font-weight: bold;">Lamentamos no poder atenderte en este momento.</h3>
+        <h3 class="" style="font-weight: bold;">Te sugerimos pagar tu hipoteca puntualmente durante 12 meses como mínimo, y volver a contactarnos.</h3>
         <h3 class="" style="font-weight: bold;">Esperamos apoyarte en un futuro para cumplir tus sueños.</h3>
     </div>`;
 
@@ -1162,7 +1185,7 @@ function getTemplateAutorizado(_nivelAceptacion) {
         tagsAutorizado = `
                           <img src='images/resultado_1.jpg' alt="Resultado" style="height:280px;" />
                           <span class="procesandoValidacion_1">Has terminado tu precalificación.<span>
-                          <span class="procesandoValidacion_2">En este momento no eres candidato aun ${OBJCaptura.tipoCredito}, no te preocupes, te sugerimos mejorar tu historial créditicio y/o capacidad de pago para volver a aplicar. <span>
+                          <span class="procesandoValidacion_2">En este momento no eres candidato aún ${OBJCaptura.tipoCredito}, no te preocupes, te sugerimos mejorar tu historial crediticio y/o capacidad de pago para volver a aplicar.<span>
                          `;
 
     }
@@ -1411,12 +1434,12 @@ async function registrarProspecto() {
         const ds = await setProspecto();
         if (fg_resultOK(ds.result)) {
             OBJCaptura.idProspecto = ds.result[0].ID;
-            PAGECONTROLS.controls.step_8_Wait.hidden = true;
-            PAGECONTROLS.controls.step_8_row.hidden = false;
+            PAGECONTROLS.controls.step_7_Wait.hidden = true;
+            PAGECONTROLS.controls.step_7_row.hidden = false;
         }
         else{
-            PAGECONTROLS.controls.step_8_Wait.hidden = false;
-            PAGECONTROLS.controls.step_8_row.hidden = true;
+            PAGECONTROLS.controls.step_7_Wait.hidden = false;
+            PAGECONTROLS.controls.step_7_row.hidden = true;
             PAGECONTROLS.controls.btnBack.click();
         }
 
@@ -1487,13 +1510,13 @@ async function btnReenviarCodigoClick() {
         OBJCaptura.correo = PAGECONTROLS.controls.txtCorreo.value;
         OBJCaptura.celular = PAGECONTROLS.controls.txtCelular.value;
 
-        PAGECONTROLS.controls.step_8_Wait.hidden = false;
-        PAGECONTROLS.controls.step_8_row.hidden = true;
+        PAGECONTROLS.controls.step_7_Wait.hidden = false;
+        PAGECONTROLS.controls.step_7_row.hidden = true;
 
         const ds = await reenviarCodigo();
         if (fg_resultOK(ds.result)) {
-            PAGECONTROLS.controls.step_8_Wait.hidden = true;
-            PAGECONTROLS.controls.step_8_row.hidden = false;
+            PAGECONTROLS.controls.step_7_Wait.hidden = true;
+            PAGECONTROLS.controls.step_7_row.hidden = false;
         }
     }
     catch (e) {
@@ -1724,7 +1747,7 @@ $(document).ready(function () {
     getTemplateStep_5();
     getTemplateStep_6();
     getTemplateStep_7();
-    getTemplateStep_8();
+    //getTemplateStep_8();
 
     // getTemplateStep_9();
     // getTemplateStep_10();
